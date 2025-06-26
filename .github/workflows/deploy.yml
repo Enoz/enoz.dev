@@ -47,36 +47,36 @@ jobs:
           TF_VAR_cloudflare_zone_id: ${{ vars.CLOUDFLARE_ZONE_ID }}
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve -input=false 
+        run: terraform apply -destroy -auto-approve -input=false 
         working-directory: tf
         env:
           TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           TF_VAR_cloudflare_zone_id: ${{ vars.CLOUDFLARE_ZONE_ID }}
-  Build-Content:
-    needs: Create-Infra
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-    name: Build And Upload Website
-    runs-on: self-hosted
-    environment: prod
-    defaults:
-      run:
-        working-directory: frontend
-    steps:
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: latest
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4.2.1
-        with:
-          aws-region: us-east-1
-          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/EnozianSiteGithubActions
-      - run: npm ci
-      - run: npm run build
-      - run: |-
-          aws s3 sync dist s3://enozian.com --delete
+  # Build-Content:
+  #   needs: Create-Infra
+  #   permissions:
+  #     contents: 'read'
+  #     id-token: 'write'
+  #   name: Build And Upload Website
+  #   runs-on: self-hosted
+  #   environment: prod
+  #   defaults:
+  #     run:
+  #       working-directory: frontend
+  #   steps:
+  #     - name: Setup Node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: latest
+  #     - name: Configure AWS Credentials
+  #       uses: aws-actions/configure-aws-credentials@v4.2.1
+  #       with:
+  #         aws-region: us-east-1
+  #         role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/EnozianSiteGithubActions
+  #     - run: npm ci
+  #     - run: npm run build
+  #     - run: |-
+  #         aws s3 sync dist s3://enozian.com --delete
 
       
 
