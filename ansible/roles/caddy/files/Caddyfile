@@ -1,3 +1,6 @@
+www.enozian.com, arekdudek.com, www.arekdudek.com {
+    redir https://enozian.com
+}
 enozian.com {
 	root * /srv/enozian.com
 	encode
