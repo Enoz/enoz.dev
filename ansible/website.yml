@@ -1,0 +1,32 @@
+- hosts: all
+  become: yes
+
+  tasks:
+    - name: Upgrade packages
+      apt:
+        update_cache: true
+        upgrade: dist
+
+    - name: Install apt source utilities
+      apt:
+        name:
+          - debian-keyring 
+          - apt-transport-https
+          - curl
+          - debian-archive-keyring 
+
+    - name: Create caddy keyring
+      shell: curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+      args:
+        creates: /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+
+    - name: Create caddy apt source
+      shell: curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+      args:
+        creates: /etc/apt/sources.list.d/caddy-stable.list
+
+    - name: Install caddy
+      apt:
+        update_cache: true
+        name: caddy
+
