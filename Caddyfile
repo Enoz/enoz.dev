@@ -1,0 +1,5 @@
+enozian.com {
+    file_server
+    root * /root/enozian.com/
+    try_files {path} /
+}
