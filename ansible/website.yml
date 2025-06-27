@@ -44,6 +44,14 @@
         name: caddy.service
         enabled: true
 
+    - name: Remove old files
+      shell: rm -rf /src/enozian.com
+
+    - name: Copy enozian.com files
+      copy:
+        src: enozian.com
+        dest: /srv/
+
     - name: Copy Caddyfile
       copy:
         src: Caddyfile
@@ -51,6 +59,8 @@
 
     - name: Reload caddy
       shell: caddy reload -c /etc/caddy/Caddyfile
+
+
 
 
 

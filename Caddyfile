@@ -1,5 +1,6 @@
 enozian.com {
-    file_server
-    root * /root/enozian.com/
-    try_files {path} /
+	root * /srv/enozian.com
+	encode
+	try_files {path} /index.html
+	file_server
 }
