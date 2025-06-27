@@ -17,7 +17,6 @@ popd
 echo '######################### Copying files to ansible folder #########################'
 echo 'Copying ansible files'
 mkdir -p ansible/files
-cp Caddyfile ansible/files/
 cp -r enozian.com/dist ansible/files/enozian.com
 
 # Playbook

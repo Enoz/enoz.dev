@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "rm -rf ./dist",
     "build": "tsc -b && vite build",
+    "postbuild": "mv ./dist ../ansible/roles/enozian.com/files/enozian.com",
     "lint": "eslint .",
     "preview": "vite preview"
   },
