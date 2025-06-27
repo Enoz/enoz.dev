@@ -7,7 +7,7 @@
     "dev": "vite",
     "prebuild": "rm -rf ./dist && rm -rf ../ansible/roles/enozian.com/files/enozian.com",
     "build": "tsc -b && vite build",
-    "postbuild": "mkdir -p ../ansible/roles/enozian.com/files/enozian.com && mv ./dist/* ../ansible/roles/enozian.com/files/enozian.com",
+    "postbuild": "mkdir -p ../ansible/roles/enozian.com/files/enozian.com && mv ./dist/* ../ansible/roles/enozian.com/files/enozian.com && rm -r ./dist",
     "lint": "eslint .",
     "preview": "vite preview"
   },
