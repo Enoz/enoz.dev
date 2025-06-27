@@ -2,6 +2,15 @@
   become: yes
 
   tasks:
+    - name: Add HTTP(S) iptables rules
+      iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_ports:
+          - "80"
+          - "443"
+        jump: ACCEPT
+
     - name: Upgrade packages
       apt:
         update_cache: true
@@ -43,14 +52,6 @@
     - name: Reload caddy
       shell: caddy reload -c /etc/caddy/Caddyfile
 
-    - name: Add HTTP(S) iptables rules
-      iptables:
-        chain: INPUT
-        protocol: tcp
-        destination_ports:
-          - "80"
-          - "443"
-        jump: ACCEPT
 
 
       
