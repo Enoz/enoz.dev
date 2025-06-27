@@ -6,3 +6,8 @@
       - "80"
       - "443"
     jump: ACCEPT
+
+- name: Save current state of the firewall in system file
+  community.general.iptables_state:
+    state: saved
+    path: /etc/sysconfig/iptables
