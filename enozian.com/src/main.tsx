@@ -8,5 +8,5 @@ createRoot(document.getElementById('root')!).render(
     <Routes>
       <Route path="/" element={<Home />} />
     </Routes>
-  </BrowserRouter>,
+  </BrowserRouter>
 )

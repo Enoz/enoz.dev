@@ -9,6 +9,7 @@
     "build": "tsc -b && vite build",
     "postbuild": "mkdir -p ../ansible/roles/enozian.com/files/enozian.com && mv ./dist/* ../ansible/roles/enozian.com/files/enozian.com && rm -r ./dist",
     "lint": "eslint .",
+    "format": "prettier . --write",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -25,6 +26,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.2.0",
+    "prettier": "3.6.2",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.35.0",
     "vite": "^7.0.0"
