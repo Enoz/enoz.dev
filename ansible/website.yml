@@ -1,16 +1,8 @@
 - hosts: all
   become: yes
-
+  roles:
+    - firewall
   tasks:
-    - name: Add HTTP(S) iptables rules
-      iptables:
-        chain: INPUT
-        protocol: tcp
-        destination_ports:
-          - "80"
-          - "443"
-        jump: ACCEPT
-
     - name: Upgrade packages
       apt:
         update_cache: true
