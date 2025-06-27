@@ -1,12 +1,14 @@
 import './Home.css'
+import pfp from '../../assets/gh-small.png'
 
-function Home() {
 
+export default function Home() {
   return (
-    <div id="home">
-      <h1>Coming Soon</h1>
-    </div>
+    <main id="home">
+      <div id="content">
+        <img id="profile-picture" src={pfp} />
+        <h1>Arek <i>Enoz</i> Dudek</h1>
+      </div>
+    </main >
   )
 }
-
-export default Home

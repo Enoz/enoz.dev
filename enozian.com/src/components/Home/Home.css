@@ -1,5 +1,24 @@
-#home {
-  height: 100vh;
+#content {
   display: grid;
   place-items: center;
+}
+
+#home {
+  height: 100vh;
+  padding: 2rem;
+  display: grid;
+  place-items: center;
+}
+
+#profile-picture {
+  width: 15rem;
+  clip-path: circle();
+}
+
+h1 {
+  text-align: center;
+}
+
+i {
+  color: rgba(255, 150, 150, 0.9);
 }
