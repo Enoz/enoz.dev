@@ -2,7 +2,6 @@ import '@mantine/core/styles.css'
 import { BrowserRouter, Routes, Route } from 'react-router'
 import { createRoot } from 'react-dom/client'
 import Home from './components/Home/Home.tsx'
-import './index.css'
 import { MantineProvider, createTheme } from '@mantine/core'
 
 
