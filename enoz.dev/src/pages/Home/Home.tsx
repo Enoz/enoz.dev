@@ -15,8 +15,6 @@ export default function Home() {
           </h1>
         </Flex>
       </Center>
-      {/* <div id="content"> */}
-      {/* </div> */}
     </div>
   )
 }
