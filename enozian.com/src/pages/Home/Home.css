@@ -1,14 +1,5 @@
-#content {
-  display: grid;
-  margin: 2rem;
-  place-items: center;
-}
-
 #home {
-  display: grid;
-  place-items: center;
   height: 100vh;
-  overflow: scroll;
 }
 
 #profile-picture {
