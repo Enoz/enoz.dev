@@ -5,6 +5,6 @@
 
 - name: Deploy website files
   copy:
-    src: enozian.com/
+    src: enoz.dev/
     dest: /srv/enoz.dev
   notify: Reload Caddy

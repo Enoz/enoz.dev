@@ -7,7 +7,16 @@
       - "443"
     jump: ACCEPT
 
-- name: Save current state of the firewall in system file
-  community.general.iptables_state:
-    state: saved
-    path: /etc/sysconfig/iptables
+
+- name: Install iptables-persistent
+  apt:
+    name: iptables-persistent
+    update_cache: true
+
+- name: Enalbe netfilter-persistent
+  systemd:
+    name: netfilter-persistent
+    enabled: true
+
+- name: Save Rules
+  shell: sudo netfilter-persistent save
