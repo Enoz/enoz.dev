@@ -1,4 +1,5 @@
 import './Home.css'
+import { Button } from '@mantine/core'
 import pfp from '../../assets/gh-small.png'
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
         <h1>
           Arek <i>Enoz</i> Dudek
         </h1>
+        <Button fullWidth>Test</Button>
       </div>
     </main>
   )
