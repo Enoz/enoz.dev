@@ -5,7 +5,7 @@ import pfp from './assets/gh-small.png'
 
 export default function App() {
   return (
-    <AppShell header={{ height: 56, collapsed: false }}>
+    <AppShell header={{ height: 56, collapsed: true }}>
       <AppShell.Header >
         <Group justify="space-between">
           <NavLink to="/">

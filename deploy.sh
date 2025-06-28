@@ -1,9 +1,9 @@
 #! /bin/bash
 
 # Build website
-echo '######################### Building enozian.com #########################'
+echo '######################### Building enoz.dev #########################'
 echo 'Build '
-pushd enozian.com
+pushd enoz.dev
 npm ci
 npm run build
 popd

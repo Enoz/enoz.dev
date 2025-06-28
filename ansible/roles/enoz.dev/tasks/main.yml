@@ -1,10 +1,10 @@
 - name: Clean old deployment
   file:
-    path: /srv/enozian.com
+    path: /srv/enoz.dev
     state: absent
 
 - name: Deploy website files
   copy:
     src: enozian.com/
-    dest: /srv/enozian.com
+    dest: /srv/enoz.dev
   notify: Reload Caddy

@@ -1,8 +1,8 @@
-www.enozian.com, arekdudek.com, www.arekdudek.com {
-    redir https://enozian.com
+www.enoz.dev, arekdudek.com, www.arekdudek.com {
+    redir https://enoz.dev
 }
-enozian.com {
-	root * /srv/enozian.com
+enoz.dev {
+	root * /srv/enoz.dev
 	encode
 	try_files {path} /index.html
 	file_server
