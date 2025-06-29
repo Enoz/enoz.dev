@@ -3,6 +3,7 @@
   roles:
     - update
     - firewall
+    - docker
     - caddy
     - enoz.dev
 
