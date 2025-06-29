@@ -1,0 +1,20 @@
+{
+  "name": "chatter-bot",
+  "version": "1.0.0",
+  "description": "Discord Chatter App Integration",
+  "license": "MIT",
+  "author": "",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "discord-interactions": "^4.3.0",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
