@@ -1,3 +1,27 @@
 body {
+  /* Background Start */
   background-color: var(--mantine-color-dark-9);
+
+  opacity: 0.9;
+
+  background-image:
+    linear-gradient(135deg, var(--mantine-color-dark-8) 25%, transparent 25%),
+    linear-gradient(225deg, var(--mantine-color-dark-8) 25%, transparent 25%),
+    linear-gradient(45deg, var(--mantine-color-dark-8) 25%, transparent 25%),
+    linear-gradient(
+      315deg,
+      var(--mantine-color-dark-8) 25%,
+      var(--mantine-color-dark-9) 25%
+    );
+
+  background-position:
+    6px 0,
+    6px 0,
+    0 0,
+    0 0;
+
+  background-size: 6px 6px;
+
+  background-repeat: repeat;
+  /* Background End */
 }
