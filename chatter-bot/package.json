@@ -8,7 +8,10 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon app.js",
-    "start": "node app.js"
+    "start": "node app.js",
+    "prebuild": "mkdir -p ../ansible/roles/chatter-bot/files/ && rm -rf ../ansible/roles/chatter-bot/files/*",
+    "build": "./build.sh",
+    "postbuild": "docker save chatter-bot:latest | gzip > ../ansible/roles/chatter-bot/files/chatter-bot.tar.gz"
   },
   "dependencies": {
     "discord-interactions": "^4.3.0",

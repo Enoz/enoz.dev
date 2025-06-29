@@ -4,3 +4,5 @@ docker build -t chatter-bot \
     --build-arg DISCORD_APP_TOKEN=${DISCORD_APP_TOKEN} \
     .
 
+
+
