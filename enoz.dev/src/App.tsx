@@ -6,14 +6,16 @@ import pfp from './assets/gh-small.png'
 export default function App() {
   return (
     <AppShell header={{ height: 56, collapsed: true }}>
-      <AppShell.Header >
+      <AppShell.Header>
         <Group justify="space-between">
           <NavLink to="/">
             <Flex>
-              <Avatar src={pfp} size="md" style={{ margin: "8" }} />
+              <Avatar src={pfp} size="md" style={{ margin: '8' }} />
             </Flex>
           </NavLink>
-          <NavLink to="/chat"><Button>Chat</Button></NavLink>
+          <NavLink to="/chat">
+            <Button>Chat</Button>
+          </NavLink>
         </Group>
       </AppShell.Header>
 
@@ -23,6 +25,6 @@ export default function App() {
           <Route path="/chat" element={<div>test</div>} />
         </Routes>
       </AppShell.Main>
-    </AppShell >
+    </AppShell>
   )
 }
