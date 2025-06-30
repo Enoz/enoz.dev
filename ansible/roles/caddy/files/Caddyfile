@@ -7,3 +7,6 @@ enoz.dev {
 	try_files {path} /index.html
 	file_server
 }
+chatter.enoz.dev {
+    reverse_proxy localhost:8081
+}
