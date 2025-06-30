@@ -6,7 +6,7 @@ export const MY_SERVER_ID = '1388918758801936397'
 export function getDiscordHeaders() {
   return {
     Authorization: `Bot ${process.env.DISCORD_APP_TOKEN}`,
-    "User-Agent": `DiscordBot (chatter-bot, 1)`,
+    'User-Agent': `DiscordBot (chatter-bot, 1)`,
     'Content-Type': 'application/json',
   }
 }
@@ -41,7 +41,7 @@ export async function getCategory(name) {
   if (foundItem) {
     return foundItem
   }
-  return createChannel(name, null, GUILD_CATEGORY)
+  return createChannel(name, undefined, GUILD_CATEGORY)
 }
 
 export async function getChannels() {
@@ -57,6 +57,7 @@ export async function getChannels() {
  */
 export async function getChannel(name, parent, type) {
   const channels = await fetch(`${API_BASE}/guilds/${MY_SERVER_ID}/channels`, {
+    method: 'GET',
     headers: getDiscordHeaders(),
   })
   const channelsJson = await channels.json()
@@ -73,7 +74,7 @@ export async function getChannel(name, parent, type) {
  * Creates a channel. If parent is supplied, the channel will be created under
  * the parent channel
  */
-export async function createChannel(name, type, parent) {
+export async function createChannel(name, parent, type) {
   const res = await fetch(`${API_BASE}/guilds/${MY_SERVER_ID}/channels`, {
     method: 'POST',
     headers: getDiscordHeaders(),
@@ -83,7 +84,8 @@ export async function createChannel(name, type, parent) {
       parent_id: parent,
     }),
   })
-  return res.json()
+  const js = await res.json()
+  return js
 }
 
 /** Send a message to a channel */
