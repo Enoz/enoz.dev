@@ -12,9 +12,10 @@ export async function handleNew(req, res) {
   try {
     const uuid = crypto.randomUUID()
     const chatCategory = await getCategory(LIVE_CATEGORY)
+    // console.log("headers", JSON.stringify(req.headers))
     const callerIP =
-      res.headers?.['x-forwarded-for'] || req.socket.remoteAddress
-    console.log(chatCategory)
+      req.headers?.['x-forwarded-for'] || req.socket.remoteAddress
+    // console.log(chatCategory)
     const channel = await createChannel(uuid, chatCategory.id, GUILD_TEXT)
     await sendMessage(channel.id, 'everyone', [
       {
