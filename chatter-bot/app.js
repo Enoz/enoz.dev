@@ -4,15 +4,30 @@ import { handleInteraction } from './interactions.js'
 import { rateLimit } from 'express-rate-limit'
 import cors from 'cors'
 import express from 'express'
-import { handleNew } from './chat.js'
+import { handleNew, handleSend, handleGet } from './chat.js'
 
 const app = express()
 
 app.use(cors())
+app.use(express.json())
 
 const newRateLimit = rateLimit({
   windowMs: 1000 * 60, // 1 Minute
   limit: 1,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+})
+
+const sendRateLimit = rateLimit({
+  windowMs: 1000 * 10, // 10 seconds
+  limit: 3,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+})
+
+const getRateLimit = rateLimit({
+  windowMs: 1000 * 5, // 3 Gets every 5 sec
+  limit: 3,
   standardHeaders: 'draft-8',
   legacyHeaders: false,
 })
@@ -24,6 +39,8 @@ app.post(
 )
 
 app.post('/new', newRateLimit, handleNew)
+app.post('/send/:uuid', sendRateLimit, handleSend)
+app.get('/get/:uuid', getRateLimit, handleGet)
 
 registerCommands()
 

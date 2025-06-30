@@ -41,7 +41,7 @@ export async function registerCommands() {
  * Gets the discord Category object with a given name If the category doesn't
  * exist, it will be created
  */
-export async function getCategory(name) {
+export async function useCategory(name) {
   const foundItem = await getChannel(name, null, GUILD_CATEGORY)
   if (foundItem) {
     return foundItem
