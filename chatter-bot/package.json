@@ -11,6 +11,7 @@
     "start": "node app.js",
     "prebuild": "mkdir -p ../ansible/roles/chatter-bot/files/ && rm -rf ../ansible/roles/chatter-bot/files/*",
     "build": "docker build -t chatter-bot .",
+    "format": "prettier --write .",
     "postbuild": "docker save chatter-bot:latest | gzip > ../ansible/roles/chatter-bot/files/chatter-bot.tar.gz"
   },
   "dependencies": {
@@ -18,6 +19,8 @@
     "express": "^5.1.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "prettier": "~3.5.0",
+    "prettier-plugin-jsdoc": "^1.3.2"
   }
 }
