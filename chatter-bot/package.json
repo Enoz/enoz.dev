@@ -15,6 +15,7 @@
     "postbuild": "docker save chatter-bot:latest | gzip > ../ansible/roles/chatter-bot/files/chatter-bot.tar.gz"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "discord-interactions": "^4.3.0",
     "express": "^5.1.0",
     "express-rate-limit": "^7.5.1"

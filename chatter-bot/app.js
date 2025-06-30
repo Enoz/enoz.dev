@@ -2,10 +2,13 @@ import { registerCommands } from './discord.js'
 import { verifyKeyMiddleware } from 'discord-interactions'
 import { handleInteraction } from './interactions.js'
 import { rateLimit } from 'express-rate-limit'
+import cors from 'cors'
 import express from 'express'
 import { handleNew } from './chat.js'
 
 const app = express()
+
+app.use(cors())
 
 const newRateLimit = rateLimit({
   windowMs: 1000 * 60, // 1 Minute
