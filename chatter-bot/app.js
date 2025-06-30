@@ -9,29 +9,29 @@ app.use(cors())
 app.use(express.json())
 
 const newRateLimit = rateLimit({
-  windowMs: 1000 * 60, // 1 Minute
+  windowMs: 1000 * 20, // 20 sec
   limit: 1,
   standardHeaders: 'draft-8',
   legacyHeaders: false,
 })
 
 const sendRateLimit = rateLimit({
-  windowMs: 1000 * 10, // 10 seconds
-  limit: 3,
+  windowMs: 1000 * 5, // 5 seconds
+  limit: 5,
   standardHeaders: 'draft-8',
   legacyHeaders: false,
 })
 
 const getRateLimit = rateLimit({
-  windowMs: 1000 * 5, // 3 Gets every 5 sec
-  limit: 3,
+  windowMs: 1000 * 5, // 5 Gets every 5 sec
+  limit: 5,
   standardHeaders: 'draft-8',
   legacyHeaders: false,
 })
 
 app.post('/new', newRateLimit, handleNew)
-app.post('/send/:chid', sendRateLimit, handleSend)
-app.get('/get/:chid', getRateLimit, handleGet)
+app.post('/messages/:chid', sendRateLimit, handleSend)
+app.get('/messages/:chid', getRateLimit, handleGet)
 
 const PORT = process.env.PORT || 3000
 app.listen(process.env.PORT || 3000, () => {
