@@ -31,7 +31,7 @@
   community.docker.docker_container:
     name: chatter-bot
     image: chatter-bot:latest
-    restart: true
+    restart_policy: always
     env_file: /root/chatter-bot/secrets.env
     ports:
       - "8081:3000"
