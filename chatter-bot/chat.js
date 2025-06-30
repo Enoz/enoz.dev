@@ -5,6 +5,7 @@ import {
   getChannel,
   GUILD_TEXT,
   sendMessage,
+  deleteChannel,
 } from './discord.js'
 
 const LIVE_CATEGORY = 'active-chats'
@@ -30,18 +31,22 @@ export async function handleNew(req, res) {
 }
 
 export async function handleSend(req, res) {
-  console.log(req)
-  if (!req.body?.message) {
-    return res.status(400).json({ error: 'message required' })
+  try {
+    if (!req.body?.message) {
+      return res.status(400).json({ error: 'message required' })
+    }
+    const uuid = req.params.uuid
+    const activeCategory = await useCategory(LIVE_CATEGORY)
+    const channel = await getChannel(uuid, activeCategory.id, GUILD_TEXT)
+    if (channel == null) {
+      return res.status(404).json({ error: 'room does not exist' })
+    }
+    await sendMessage(channel.id, req.body.message, null)
+    return res.status(200).json({ status: 'sent' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ status: 'fail' })
   }
-  const uuid = req.params.uuid
-  const activeCategory = await useCategory(LIVE_CATEGORY)
-  const channel = await getChannel(uuid, activeCategory.id, GUILD_TEXT)
-  if (channel == null) {
-    return res.status(404).json({ error: 'room does not exist' })
-  }
-  sendMessage(channel.id, req.body.message, null)
-  return res.status(200).json({})
 }
 
 export async function handleGet(req, res) {

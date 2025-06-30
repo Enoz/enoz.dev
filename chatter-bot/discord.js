@@ -11,6 +11,13 @@ export function getDiscordHeaders() {
   }
 }
 
+async function checkErrors(func, res, healthyStatus) {
+  if (res.status != healthyStatus) {
+    const js = await res.json()
+    throw new Error(`${func} error (${res.status}): ${JSON.stringify(js)}`)
+  }
+}
+
 /** Registers Slash (/) commands with Discord API */
 export async function registerCommands() {
   const commandRegister = `${API_BASE}/applications/${process.env.DISCORD_APP_ID}/commands`
@@ -49,12 +56,6 @@ export async function useCategory(name) {
   return createChannel(name, undefined, GUILD_CATEGORY)
 }
 
-export async function getChannels() {
-  return fetch(`${API_BASE}/guilds/${MY_SERVER_ID}/channels`, {
-    headers: getDiscordHeaders(),
-  })
-}
-
 /**
  * Gets the channel object
  *
@@ -65,7 +66,9 @@ export async function getChannel(name, parent, type) {
     method: 'GET',
     headers: getDiscordHeaders(),
   })
+  await checkErrors('getChannel', channels, 200)
   const channelsJson = await channels.json()
+
   return channelsJson.find((channel) => {
     return (
       channel.parent_id == parent &&
@@ -89,8 +92,8 @@ export async function createChannel(name, parent, type) {
       parent_id: parent,
     }),
   })
-  const js = await res.json()
-  return js
+  await checkErrors('createChannel', res, 201)
+  return res.json()
 }
 
 /** Deletes a channel */
@@ -99,6 +102,7 @@ export async function deleteChannel(channelId) {
     method: 'DELETE',
     headers: getDiscordHeaders(),
   })
+  checkErrors('deleteChannel', res, 200)
   return res.json()
 }
 
@@ -113,5 +117,6 @@ export async function sendMessage(channel, message, embeds) {
       embeds: embeds,
     }),
   })
+  await checkErrors('sendMessage', res, 200)
   return res.json()
 }
