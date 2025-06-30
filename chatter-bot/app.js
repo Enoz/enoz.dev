@@ -1,9 +1,4 @@
-import {
-  registerCommands,
-  createChannel,
-  getCategory,
-  getChannels,
-} from './discord.js'
+import { registerCommands } from './discord.js'
 import { verifyKeyMiddleware } from 'discord-interactions'
 import { handleInteraction } from './interactions.js'
 import express from 'express'
@@ -19,12 +14,6 @@ app.post(
 )
 
 app.post('/new', handleNew)
-
-app.get('/test123', async (_, res) => {
-  const cg = await getCategory('test')
-  console.log(cg)
-  return res.status(200).json({ nice: '123' })
-})
 
 registerCommands()
 app.listen(PORT, () => {

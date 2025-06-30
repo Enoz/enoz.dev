@@ -84,3 +84,17 @@ export async function createChannel(name, type, parent) {
   })
   return res.json()
 }
+
+/** Send a message to a channel */
+export async function sendMessage(channel, message, embeds) {
+  const res = await fetch(`${API_BASE}/channels/${channel}/messages`, {
+    method: 'POST',
+    headers: getDiscordHeaders(),
+    body: JSON.stringify({
+      content: message,
+      tts: false,
+      embeds: embeds,
+    }),
+  })
+  return res.json()
+}
