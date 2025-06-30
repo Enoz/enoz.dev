@@ -1,4 +1,4 @@
-import { registerCommands } from './discord.js'
+import { discordRateLimitMiddleware, registerCommands } from './discord.js'
 import { verifyKeyMiddleware } from 'discord-interactions'
 import { handleInteraction } from './interactions.js'
 import { rateLimit } from 'express-rate-limit'
@@ -38,9 +38,9 @@ app.post(
   handleInteraction
 )
 
-app.post('/new', newRateLimit, handleNew)
-app.post('/send/:uuid', sendRateLimit, handleSend)
-app.get('/get/:uuid', getRateLimit, handleGet)
+app.post('/new', newRateLimit, discordRateLimitMiddleware, handleNew)
+app.post('/send/:uuid', sendRateLimit, discordRateLimitMiddleware, handleSend)
+app.get('/get/:uuid', getRateLimit, discordRateLimitMiddleware, handleGet)
 
 registerCommands()
 

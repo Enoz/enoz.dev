@@ -11,11 +11,24 @@ export function getDiscordHeaders() {
   }
 }
 
+let limitLifted = 0
 async function checkErrors(func, res, healthyStatus) {
   if (res.status != healthyStatus) {
     const js = await res.json()
+    if (js.retry_after !== undefined) {
+      limitLifted = Date.now() + js.retry_after * 1000
+    }
     throw new Error(`${func} error (${res.status}): ${JSON.stringify(js)}`)
   }
+}
+
+export async function discordRateLimitMiddleware(_, res, next) {
+  if (Date.now() < limitLifted) {
+    return res
+      .status(429)
+      .json({ error: 'Awaiting internal discord rate limit' })
+  }
+  next()
 }
 
 /** Registers Slash (/) commands with Discord API */
@@ -118,5 +131,19 @@ export async function sendMessage(channel, message, embeds) {
     }),
   })
   await checkErrors('sendMessage', res, 200)
+  return res.json()
+}
+
+/** Get channel messages */
+export async function getMessages(channelId, since) {
+  let url = `${API_BASE}/channels/${channelId}/messages`
+  if (since !== undefined) {
+    url += `?after=${since}`
+  }
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: getDiscordHeaders(),
+  })
+  await checkErrors('getMessages', res, 200)
   return res.json()
 }
