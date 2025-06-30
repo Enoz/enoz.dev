@@ -1,4 +1,5 @@
-import https from "https";
+import { registerCommands } from "./register.js";
+import { createChannel, getCategory, getChannels } from "./util.js";
 import {
   verifyKeyMiddleware,
   InteractionType,
@@ -59,34 +60,12 @@ app.post(
   },
 );
 
-app.get("/test123", (_, res) => {
+app.get("/test123", async (_, res) => {
+  const cg = await getCategory("test");
   return res.status(200).json({ nice: "123" });
 });
 
-// Register Commands
-
-const guildUrl = `https://discord.com/api/v10/applications/${process.env.DISCORD_APP_ID}/commands`;
-const commands = [
-  {
-    name: "test",
-    type: 1,
-    description: "Debug test command",
-  },
-];
-
-for (const cmd of commands) {
-  const options = {
-    method: "POST",
-    headers: {
-      Authorization: `Bot ${process.env.DISCORD_APP_TOKEN}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(cmd),
-  };
-  await fetch(guildUrl, options);
-}
-
-// Listen
+registerCommands();
 
 app.listen(PORT, () => {
   console.log("Listening on port", PORT);
