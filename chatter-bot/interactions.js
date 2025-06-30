@@ -4,9 +4,10 @@ import {
   InteractionResponseFlags,
   MessageComponentTypes,
 } from 'discord-interactions'
+import { deleteChannel } from './discord.js'
 export async function handleInteraction(req, res) {
   // Interaction id, type and data
-  const { id, type, data } = req.body
+  const { id, type, data, channel } = req.body
 
   /** Handle verification requests */
   if (type === InteractionType.PING) {
@@ -36,6 +37,12 @@ export async function handleInteraction(req, res) {
           ],
         },
       })
+    }
+
+    // "endchat" command
+    if (name === 'endchat') {
+      await deleteChannel(channel.id)
+      return res.status(200)
     }
 
     console.error(`unknown command: ${name}`)

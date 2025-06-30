@@ -16,7 +16,7 @@ export async function handleNew(req, res) {
       res.headers?.['x-forwarded-for'] || req.socket.remoteAddress
     console.log(chatCategory)
     const channel = await createChannel(uuid, chatCategory.id, GUILD_TEXT)
-    await sendMessage(channel.id, '@everyone', [
+    await sendMessage(channel.id, 'everyone', [
       {
         title: 'IP',
         description: `${callerIP}`,

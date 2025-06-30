@@ -20,6 +20,11 @@ export async function registerCommands() {
       type: 1,
       description: 'Debug test command',
     },
+    {
+      name: 'endchat',
+      type: 1,
+      description: 'Ends the chat',
+    },
   ]
 
   for (const cmd of commands) {
@@ -86,6 +91,15 @@ export async function createChannel(name, parent, type) {
   })
   const js = await res.json()
   return js
+}
+
+/** Deletes a channel */
+export async function deleteChannel(channelId) {
+  const res = await fetch(`${API_BASE}/channels/${channelId}`, {
+    method: 'DELETE',
+    headers: getDiscordHeaders(),
+  })
+  return res.json()
 }
 
 /** Send a message to a channel */
