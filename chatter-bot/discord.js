@@ -6,6 +6,7 @@ export const MY_SERVER_ID = '1388918758801936397'
 export function getDiscordHeaders() {
   return {
     Authorization: `Bot ${process.env.DISCORD_APP_TOKEN}`,
+    "User-Agent": `DiscordBot (chatter-bot, 1)`,
     'Content-Type': 'application/json',
   }
 }
