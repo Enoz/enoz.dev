@@ -32,8 +32,7 @@ popd
 # Export chatter-bot .env
 rm -f ./ansible/roles/chatter-bot/files/secrets.env
 echo "DISCORD_APP_TOKEN=${DISCORD_APP_TOKEN}" >> ./ansible/roles/chatter-bot/files/secrets.env
-echo "DISCORD_APP_PUBLICKEY=${DISCORD_APP_PUBLICKEY}" >> ./ansible/roles/chatter-bot/files/secrets.env
-echo "DISCORD_APP_ID=${DISCORD_APP_ID}" >> ./ansible/roles/chatter-bot/files/secrets.env
+echo "DISCORD_GUILD_ID=${DISCORD_GUILD_ID}" >> ./ansible/roles/chatter-bot/files/secrets.env
 
 # Playbook
 echo '######################### Executing Playbook #########################'

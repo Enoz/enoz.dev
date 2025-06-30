@@ -7,7 +7,7 @@ import {
   GatewayIntentBits,
 } from 'discord.js'
 
-export const MY_GUILD = '1388918758801936397'
+export const MY_GUILD = process.env.DISCORD_GUILD_ID
 const ACTIVE_CHANNEL = 'active-chats'
 class GatewayClient {
   constructor() {
