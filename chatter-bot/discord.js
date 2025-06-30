@@ -1,5 +1,5 @@
-const GUILD_TEXT = 0
-const GUILD_CATEGORY = 4
+export const GUILD_TEXT = 0
+export const GUILD_CATEGORY = 4
 
 export const API_BASE = 'https://discord.com/api/v10'
 export const MY_SERVER_ID = '1388918758801936397'

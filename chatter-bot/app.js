@@ -7,6 +7,7 @@ import {
 import { verifyKeyMiddleware } from 'discord-interactions'
 import { handleInteraction } from './interactions.js'
 import express from 'express'
+import { handleNew } from './chat.js'
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -16,6 +17,8 @@ app.post(
   verifyKeyMiddleware(process.env.DISCORD_APP_PUBLICKEY),
   handleInteraction
 )
+
+app.post('/new', handleNew)
 
 app.get('/test123', async (_, res) => {
   const cg = await getCategory('test')
