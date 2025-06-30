@@ -147,3 +147,50 @@ export async function getMessages(channelId, since) {
   await checkErrors('getMessages', res, 200)
   return res.json()
 }
+
+export async function getGatewayURL() {
+  const res = await fetch(`${API_BASE}/gateway`, {
+    headers: getDiscordHeaders(),
+  })
+  await checkErrors('getGatewayURL', res, 200)
+  return res.json()
+}
+
+export async function createGateway() {
+  const gateway = await getGatewayURL()
+  const socket = new WebSocket(gateway.url)
+
+  let hbInterval = null
+  let lastSequence = null
+
+  const sendHeartbeat = () => {
+    const data = {
+      op: 1,
+      d: lastSequence,
+    }
+    socket.send(JSON.stringify(data))
+  }
+  socket.addEventListener('open', (event) => {
+    console.log('[Gateway] Connection Established')
+  })
+
+  socket.addEventListener('message', (event) => {
+    console.log('[Gateway] Server Message: ', event.data)
+    const data = JSON.parse(event.data)
+    if (data.op === 10) {
+      hbInterval = setInterval(sendHeartbeat, data.d.heartbeat_interval)
+    }
+    if (data.op === 1) {
+      sendHeartbeat()
+    }
+  })
+
+  socket.addEventListener('close', (event) => {
+    console.log('[Gateway] Closed: ', event.code, event.reason)
+    clearInterval(hbInterval)
+  })
+
+  socket.addEventListener('error', (error) => {
+    console.error('[Gateway] Error: ', error)
+  })
+}

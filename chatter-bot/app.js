@@ -1,4 +1,4 @@
-import { discordRateLimitMiddleware, registerCommands } from './discord.js'
+import { createGateway, discordRateLimitMiddleware, registerCommands } from './discord.js'
 import { verifyKeyMiddleware } from 'discord-interactions'
 import { handleInteraction } from './interactions.js'
 import { rateLimit } from 'express-rate-limit'
@@ -43,6 +43,7 @@ app.post('/send/:uuid', sendRateLimit, discordRateLimitMiddleware, handleSend)
 app.get('/get/:uuid', getRateLimit, discordRateLimitMiddleware, handleGet)
 
 registerCommands()
+createGateway()
 
 const PORT = process.env.PORT || 3000
 app.listen(process.env.PORT || 3000, () => {
