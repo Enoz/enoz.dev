@@ -4,7 +4,7 @@ import {
   InteractionResponseFlags,
   MessageComponentTypes,
 } from 'discord-interactions'
-import { deleteChannel } from './discord.js'
+import { deleteChannel } from './discord-old.js'
 export async function handleInteraction(req, res) {
   // Interaction id, type and data
   const { id, type, data, channel_id } = req.body

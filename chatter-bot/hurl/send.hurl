@@ -1,4 +1,4 @@
-POST http://localhost:3000/send/1af37bda-1295-4da2-a3b3-86ed0649cbb5
+POST http://localhost:3000/send/1389320299408789775
 {
   "message": "test"
 }

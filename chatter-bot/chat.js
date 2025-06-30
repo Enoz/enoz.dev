@@ -1,29 +1,15 @@
-import crypto from 'crypto'
-import {
-  createChannel,
-  useCategory,
-  getChannel,
-  GUILD_TEXT,
-  sendMessage,
-  getMessages,
-} from './discord.js'
+import GatewayClient from './gateway.js'
 
-const LIVE_CATEGORY = 'active-chats'
+const client = new GatewayClient()
 
 export async function handleNew(req, res) {
   try {
-    const uuid = crypto.randomUUID()
-    const chatCategory = await useCategory(LIVE_CATEGORY)
     const callerIP =
       req.headers?.['x-forwarded-for'] || req.socket.remoteAddress
-    const channel = await createChannel(uuid, chatCategory.id, GUILD_TEXT)
-    await sendMessage(channel.id, 'everyone', [
-      {
-        title: 'IP',
-        description: `${callerIP}`,
-      },
+    const channel = await client.newChat([
+      { title: 'Client IP', description: callerIP },
     ])
-    return res.status(200).json({ id: uuid })
+    return res.status(200).json({ id: channel.id })
   } catch (err) {
     console.error(err)
     return res.status(500).send()
@@ -35,13 +21,8 @@ export async function handleSend(req, res) {
     if (!req.body?.message) {
       return res.status(400).json({ error: 'message required' })
     }
-    const uuid = req.params.uuid
-    const activeCategory = await useCategory(LIVE_CATEGORY)
-    const channel = await getChannel(uuid, activeCategory.id, GUILD_TEXT)
-    if (channel == null) {
-      return res.status(404).json({ error: 'room does not exist' })
-    }
-    await sendMessage(channel.id, req.body.message, null)
+    const chid = req.params.chid
+    await client.sendMessage(chid, req.body.message)
     return res.status(200).send()
   } catch (error) {
     console.error(error)
@@ -51,26 +32,9 @@ export async function handleSend(req, res) {
 
 export async function handleGet(req, res) {
   try {
-    const uuid = req.params.uuid
-    const activeCategory = await useCategory(LIVE_CATEGORY)
-    const channel = await getChannel(uuid, activeCategory.id, GUILD_TEXT)
-    if (channel == null) {
-      return res.status(404).json({ error: 'room does not exist' })
-    }
-    const messages = await getMessages(channel.id, req.query.after)
-
-    // Filter sensitive details out
-    const filtered = messages
-      .filter((msg) => msg.embeds.length == 0)
-      .map((msg) => {
-        return {
-          content: msg.content,
-          id: msg.id,
-          author: msg.author.username,
-        }
-      })
-
-    return res.status(200).json(filtered)
+    const chid = req.params.chid
+    const messages = client.getMessages(chid)
+    return res.status(200).json(messages)
   } catch (error) {
     console.error(error)
     return res.status(500).send()
