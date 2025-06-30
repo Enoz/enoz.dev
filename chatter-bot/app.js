@@ -1,11 +1,18 @@
 import { registerCommands } from './discord.js'
 import { verifyKeyMiddleware } from 'discord-interactions'
 import { handleInteraction } from './interactions.js'
+import { rateLimit } from 'express-rate-limit'
 import express from 'express'
 import { handleNew } from './chat.js'
 
 const app = express()
-const PORT = process.env.PORT || 3000
+
+const newRateLimit = rateLimit({
+  windowMs: 1000 * 60, // 1 Minute
+  limit: 1,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+})
 
 app.post(
   '/interactions',
@@ -13,9 +20,11 @@ app.post(
   handleInteraction
 )
 
-app.post('/new', handleNew)
+app.post('/new', newRateLimit, handleNew)
 
 registerCommands()
-app.listen(PORT, () => {
+
+const PORT = process.env.PORT || 3000
+app.listen(process.env.PORT || 3000, () => {
   console.log('Listening on port', PORT)
 })
