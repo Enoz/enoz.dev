@@ -30,8 +30,8 @@ const getRateLimit = rateLimit({
 })
 
 app.post('/new', newRateLimit, handleNew)
-app.post('/messages/:chid', sendRateLimit, handleSend)
-app.get('/messages/:chid', getRateLimit, handleGet)
+app.post('/messages/:uuid', sendRateLimit, handleSend)
+app.get('/messages/:uuid', getRateLimit, handleGet)
 
 const PORT = process.env.PORT || 3000
 app.listen(process.env.PORT || 3000, () => {

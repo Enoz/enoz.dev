@@ -35,7 +35,7 @@ class GatewayClient {
     if (message.content === '') {
       return
     }
-    let oldLog = this.#messageLog[message.channelId]
+    let oldLog = this.#messageLog[message.channel.name]
     if (!oldLog) {
       oldLog = []
     }
@@ -43,12 +43,11 @@ class GatewayClient {
       content: message.content,
       author: message.author.globalName,
     })
-    this.#messageLog[message.channelId] = oldLog
-    console.log(this.#messageLog)
+    this.#messageLog[message.channel.name] = oldLog
   }
 
-  getMessages(channelId) {
-    return this.#messageLog[channelId]
+  getMessages(uuid) {
+    return this.#messageLog[uuid]
   }
 
   async newChat(embeds) {
@@ -88,7 +87,7 @@ class GatewayClient {
     return channel
   }
 
-  async sendMessage(channelId, message) {
+  async sendMessage(uuid, message) {
     const guild = await this.client.guilds.fetch(MY_GUILD)
     if (!guild) {
       throw new Error('Guild unavailable')
@@ -104,7 +103,7 @@ class GatewayClient {
     }
     const channel = channels.find(
       (ch) =>
-        ch.id == channelId &&
+        ch.name == uuid &&
         ch.type == ChannelType.GuildText &&
         ch.parentId == activeChat.id
     )

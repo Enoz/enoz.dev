@@ -9,7 +9,7 @@ export async function handleNew(req, res) {
     const channel = await client.newChat([
       { title: 'Client IP', description: callerIP },
     ])
-    return res.status(200).json({ id: channel.id })
+    return res.status(200).json({ id: channel.name })
   } catch (err) {
     console.error(err)
     return res.status(500).send()
@@ -21,8 +21,8 @@ export async function handleSend(req, res) {
     if (!req.body?.message) {
       return res.status(400).json({ error: 'message required' })
     }
-    const chid = req.params.chid
-    await client.sendMessage(chid, req.body.message)
+    const uuid = req.params.uuid
+    await client.sendMessage(uuid, req.body.message)
     return res.status(200).send()
   } catch (error) {
     console.error(error)
@@ -32,8 +32,8 @@ export async function handleSend(req, res) {
 
 export async function handleGet(req, res) {
   try {
-    const chid = req.params.chid
-    const messages = client.getMessages(chid)
+    const uuid = req.params.uuid
+    const messages = client.getMessages(uuid)
     return res.status(200).json(messages)
   } catch (error) {
     console.error(error)
