@@ -20,6 +20,7 @@ class GatewayClient {
     })
     this.client.once(Events.ClientReady, (readyClient) => {
       console.log(`Ready! Logged in as ${readyClient.user.tag}`)
+      this.#syncMessages()
     })
     this.client.on('messageCreate', (msg) => {
       this.#logMessage(msg)
@@ -28,7 +29,7 @@ class GatewayClient {
   }
 
   #messageLog = {}
-  #logMessage(message) {
+  #logMessage = (message) => {
     if (message.mentions.everyone) {
       return
     }
@@ -46,11 +47,33 @@ class GatewayClient {
     this.#messageLog[message.channel.name] = oldLog
   }
 
-  getMessages(uuid) {
+  #syncMessages = async () => {
+    this.#messageLog = {}
+
+    const guild = await this.client.guilds.fetch(MY_GUILD)
+    if (!guild) {
+      throw new Error('Guild unavailable')
+    }
+    const channels = await guild.channels.fetch()
+    const activeChat = channels.find(
+      (ch) => ch.type == ChannelType.GuildCategory && ch.name == ACTIVE_CHANNEL
+    )
+    if (!activeChat) {
+      return
+    }
+
+    const chatChannels = channels.filter((ch) => ch.parentId == activeChat.id)
+    for (const ch of chatChannels) {
+      const messages = await ch[1].messages.fetch()
+      messages.reverse().forEach(this.#logMessage)
+    }
+  }
+
+  getMessages = (uuid) => {
     return this.#messageLog[uuid]
   }
 
-  async newChat(embeds) {
+  newChat = async (embeds) => {
     const guild = await this.client.guilds.fetch(MY_GUILD)
     if (!guild) {
       throw new Error('Guild unavailable')
@@ -87,7 +110,7 @@ class GatewayClient {
     return channel
   }
 
-  async sendMessage(uuid, message) {
+  sendMessage = async (uuid, message) => {
     const guild = await this.client.guilds.fetch(MY_GUILD)
     if (!guild) {
       throw new Error('Guild unavailable')
