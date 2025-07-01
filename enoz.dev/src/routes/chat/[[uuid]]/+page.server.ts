@@ -1,20 +1,16 @@
 import { error, redirect } from '@sveltejs/kit';
-
-const CHATTER_API = 'https://chatter.enoz.dev';
+import { GetMessages, NewChat } from '$lib/chat';
 
 export async function load({ params, request }) {
+	const headers: HeadersInit = {};
+	const forwardedFor = request.headers.get('x-forwarded-for');
+	if (forwardedFor !== undefined) {
+		headers['x-override-ip'] = forwardedFor;
+	}
+
 	// No UUID, generate a new one
 	if (params.uuid === undefined) {
-		const headers: HeadersInit = {};
-		const forwardedFor = request.headers.get('x-forwarded-for');
-		if (forwardedFor !== undefined) {
-			headers['x-override-ip'] = forwardedFor;
-		}
-
-		const createChat = await fetch(`${CHATTER_API}/new`, {
-			method: 'POST',
-			headers
-		});
+		const createChat = await NewChat();
 		if (createChat.status == 429) {
 			error(429, 'Creating chats too fast');
 		}
@@ -23,7 +19,7 @@ export async function load({ params, request }) {
 	}
 
 	// Check the health of the chat provided
-	const chatHistory = await fetch(`${CHATTER_API}/messages/${params.uuid}`);
+	const chatHistory = await GetMessages(params.uuid, headers);
 	if (chatHistory.status == 404) {
 		// Chat doesn't exist, create a new one
 		redirect(303, `/chat`);
