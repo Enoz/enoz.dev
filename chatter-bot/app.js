@@ -9,9 +9,18 @@ app.set('trust proxy', true)
 app.use(cors())
 app.use(express.json())
 
+const rlKey = (req, res) => {
+  const override = req.headers['x-override-ip']
+  if (override !== undefined) {
+    return override
+  }
+  return req.ip
+}
+
 const newRateLimit = rateLimit({
-  windowMs: 1000 * 20, // 20 sec
+  windowMs: 1000 * 5, // 3 sec
   limit: 1,
+  keyGenerator: rlKey,
   standardHeaders: 'draft-8',
   legacyHeaders: false,
 })
@@ -19,13 +28,15 @@ const newRateLimit = rateLimit({
 const sendRateLimit = rateLimit({
   windowMs: 1000 * 5, // 5 seconds
   limit: 5,
+  keyGenerator: rlKey,
   standardHeaders: 'draft-8',
   legacyHeaders: false,
 })
-
+//
 const getRateLimit = rateLimit({
   windowMs: 1000 * 5, // 5 Gets every 5 sec
   limit: 5,
+  keyGenerator: rlKey,
   standardHeaders: 'draft-8',
   legacyHeaders: false,
 })
