@@ -4,6 +4,7 @@ import express from 'express'
 import { handleNew, handleSend, handleGet } from './chat.js'
 
 const app = express()
+app.set('trust proxy', true)
 
 app.use(cors())
 app.use(express.json())

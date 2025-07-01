@@ -6,6 +6,7 @@
 	<div id="whoami">
 		<img src={pfp} alt="Github Profile" />
 		<h1>Arek <i>Enoz</i> Dudek</h1>
+		<!-- <a data-sveltekit-preload-data="tap" href="/chat">Chat</a> -->
 	</div>
 </div>
 

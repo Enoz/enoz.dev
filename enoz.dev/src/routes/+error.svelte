@@ -1,5 +1,10 @@
+<script>
+	import { page } from '$app/state';
+</script>
+
 <div>
-	<h1>404</h1>
+	<h1>{page.status}</h1>
+	<p>{page.error?.message}</p>
 </div>
 
 <style>
@@ -11,5 +16,10 @@
 	h1 {
 		margin: 0;
 		font-size: 5em;
+		text-align: center;
+	}
+	p {
+		text-align: center;
+		font-size: 2em;
 	}
 </style>
