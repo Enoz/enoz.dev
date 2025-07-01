@@ -19,14 +19,14 @@ fi
 echo '######################### Building enoz.dev #########################'
 pushd enoz.dev
 npm ci
-npm run build
+npm run docker
 popd
 
 # Build chatter-bot
 echo '######################### Building chatter-bot #########################'
 pushd chatter-bot
 npm ci
-npm run build
+npm run docker
 popd
 
 # Export chatter-bot .env

@@ -2,10 +2,7 @@ www.enoz.dev, arekdudek.com, www.arekdudek.com {
     redir https://enoz.dev
 }
 enoz.dev {
-	root * /srv/enoz.dev
-	encode
-	try_files {path} /index.html
-	file_server
+    reverse_proxy localhost:8082
 }
 chatter.enoz.dev {
     reverse_proxy localhost:8081

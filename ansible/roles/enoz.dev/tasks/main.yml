@@ -1,10 +1,31 @@
-- name: Clean old deployment
-  file:
-    path: /srv/enoz.dev
+- name: Remove old container
+  community.docker.docker_container:
+    name: enoz.dev
     state: absent
 
-- name: Deploy website files
+- name: Clean old image
+  file:
+    path: /root/enoz.dev/
+    state: absent
+
+- name: Create enoz.dev directory
+  file:
+    path: /root/enoz.dev
+    state: directory
+
+- name: Copy image tar
   copy:
-    src: enoz.dev/
-    dest: /srv/enoz.dev
-  notify: Reload Caddy
+    src: enoz.dev.tar.gz
+    dest: /root/enoz.dev/enoz.dev.tar.gz
+
+- name: Load enoz.dev image
+  community.docker.docker_image_load:
+    path: "/root/enoz.dev/enoz.dev.tar.gz"
+
+- name: Start enoz.dev
+  community.docker.docker_container:
+    name: enoz.dev
+    image: enoz.dev:latest
+    restart_policy: always
+    ports:
+      - "8082:3000"

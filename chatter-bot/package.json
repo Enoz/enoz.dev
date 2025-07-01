@@ -9,10 +9,10 @@
   "scripts": {
     "dev": "nodemon app.js",
     "start": "node app.js",
-    "prebuild": "mkdir -p ../ansible/roles/chatter-bot/files/ && rm -rf ../ansible/roles/chatter-bot/files/*",
-    "build": "docker build -t chatter-bot .",
+    "predocker": "mkdir -p ../ansible/roles/chatter-bot/files/ && rm -rf ../ansible/roles/chatter-bot/files/*",
+    "docker": "docker build -t chatter-bot .",
     "format": "prettier --write .",
-    "postbuild": "docker save chatter-bot:latest | gzip > ../ansible/roles/chatter-bot/files/chatter-bot.tar.gz"
+    "postdocker": "docker save chatter-bot:latest | gzip > ../ansible/roles/chatter-bot/files/chatter-bot.tar.gz"
   },
   "dependencies": {
     "cors": "^2.8.5",
