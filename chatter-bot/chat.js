@@ -5,8 +5,10 @@ const client = new GatewayClient()
 export async function handleNew(req, res) {
   try {
     const callerIP = req.ip
+    const overrideIp = req.headers['x-override-ip']
     const channel = await client.newChat([
       { title: 'Client IP', description: callerIP },
+      { title: 'Override IP', description: overrideIp}
     ])
     return res.status(200).json({ id: channel.name })
   } catch (err) {
