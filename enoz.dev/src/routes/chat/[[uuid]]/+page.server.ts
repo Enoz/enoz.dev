@@ -6,7 +6,7 @@ export async function load({ params, request }) {
 	// No UUID, generate a new one
 	if (params.uuid === undefined) {
 		const headers: HeadersInit = {};
-		const forwardedFor = request.headers?.['x-forwarded-for'];
+		const forwardedFor = request.headers.get('x-forwarded-for');
 		if (forwardedFor !== undefined) {
 			headers['x-override-ip'] = forwardedFor;
 		}
