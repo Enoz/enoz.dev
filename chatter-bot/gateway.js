@@ -64,6 +64,7 @@ class GatewayClient {
 
     const chatChannels = channels.filter((ch) => ch.parentId == activeChat.id)
     for (const ch of chatChannels) {
+      this.#messageLog[ch[1].name] = []
       const messages = await ch[1].messages.fetch()
       messages.reverse().forEach(this.#logMessage)
     }
@@ -107,6 +108,7 @@ class GatewayClient {
       })
       channel.send({ embeds: embObj })
     }
+    this.#messageLog[uuid] = []
     return channel
   }
 

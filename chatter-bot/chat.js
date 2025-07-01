@@ -33,6 +33,9 @@ export async function handleGet(req, res) {
   try {
     const uuid = req.params.uuid
     const messages = client.getMessages(uuid)
+    if (messages === undefined) {
+      return res.status(404).send()
+    }
     return res.status(200).json(messages)
   } catch (error) {
     console.error(error)
