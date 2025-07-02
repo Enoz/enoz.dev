@@ -6,7 +6,7 @@
 	import pfp from '$lib/assets/gh-small.png';
 	import anon from './assets/anon.jpg';
 	let { data } = $props();
-	let messages = $state(data.messages.reverse());
+	let messages = $state(data.messages);
 	const uuid = data.uuid;
 
 	const onSubmit = (evt) => {
