@@ -40,7 +40,7 @@
 </script>
 
 <div class="flex h-full w-full items-center justify-center">
-	<div class="grid h-4/5 w-2/6 min-w-[30rem] grid-rows-[1fr_4rem] border bg-neutral-900 p-2">
+	<div class="grid h-4/5 w-5/6 grid-rows-[1fr_4rem] border bg-neutral-900 p-2">
 		<div class="flex h-full min-h-[0] flex-col-reverse overflow-x-hidden overflow-y-scroll">
 			{#each messages as message (message.id)}
 				<div
@@ -76,7 +76,7 @@
 						setTimeout(() => {
 							const el = document.getElementById('text-input');
 							el?.focus();
-						}, 20);
+						}, 15);
 					}}
 				/>
 				<Button type="submit">Send</Button>
