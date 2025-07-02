@@ -27,9 +27,16 @@
 </script>
 
 <div class="flex h-full w-full items-center justify-center">
-	<div class="h-4/5 w-4/5 border">
-		{#each messages as message, idx (idx)}
-			<p>{JSON.stringify(message)}</p>
-		{/each}
+	<div class="grid h-4/5 w-4/5 grid-rows-[1fr_4rem] border bg-neutral-900">
+		<div class="flex h-full flex-col justify-end">
+			{#each messages as message, idx (idx)}
+				<div>
+					<p>{JSON.stringify(message)}</p>
+				</div>
+			{/each}
+		</div>
+		<div>
+			<input />
+		</div>
 	</div>
 </div>
