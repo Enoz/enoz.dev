@@ -36,9 +36,13 @@ export async function handleSend(req, res) {
 export async function handleGet(req, res) {
   try {
     const uuid = req.params.uuid
-    const messages = client.getMessages(uuid)
+    let messages = client.getMessages(uuid)
     if (messages === undefined) {
       return res.status(404).send()
+    }
+    const after = req.query.after
+    if (after !== undefined && after > 0) {
+      messages = messages.slice(after, messages.length)
     }
     return res.status(200).json(messages)
   } catch (error) {

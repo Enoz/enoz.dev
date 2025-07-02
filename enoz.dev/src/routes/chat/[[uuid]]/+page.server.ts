@@ -40,7 +40,7 @@ export const actions = {
 			error(403, 'Missing msg field');
 		}
 		const message = fd.get('msg')?.toString() || '';
-		const sendRes = fetch(`${CHATTER_API}/messages/${event.params.uuid}`, {
+		fetch(`${CHATTER_API}/messages/${event.params.uuid}`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -49,8 +49,5 @@ export const actions = {
 				message: message
 			})
 		});
-		return {
-			messages: []
-		};
 	}
 } satisfies Actions;

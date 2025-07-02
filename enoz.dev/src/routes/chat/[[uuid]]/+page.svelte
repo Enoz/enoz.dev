@@ -9,20 +9,22 @@
 	const uuid = data.uuid;
 
 	const predictSend = (evt) => {
-        const newMessage = evt.target[0].value
-        messages.push({"content": newMessage, author: null})
+		const newMessage = evt.target[0].value;
+		messages.push({ content: newMessage, author: null });
 	};
 
 	$effect(() => {
 		const messageCheck = setInterval(async () => {
 			try {
-				const msgRes = await fetch(`${CHATTER_API}/messages/${uuid}`);
+				const msgRes = await fetch(`${CHATTER_API}/messages/${uuid}?after=${messages.length}`);
 				if (msgRes.status != 200) {
 					return;
 				}
-				const msgJs = await msgRes.json();
-				if (msgJs.length > messages.length) {
-					messages = msgJs;
+				const msgJs: Array<any> = await msgRes.json();
+				if (msgJs.length > 0) {
+					msgJs.forEach((msg) => {
+						messages.push(msg);
+					});
 				}
 			} catch (err) {
 				console.error('Message Failure', err);
