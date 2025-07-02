@@ -4,10 +4,11 @@
 	import { enhance } from '$app/forms';
 	import { CHATTER_API } from '$lib/chat.js';
 	import pfp from '$lib/assets/gh-small.png';
-    import anon from './assets/anon.jpg'
+	import anon from './assets/anon.jpg';
 	let { data } = $props();
 	let messages = $state(data.messages.reverse());
 	const uuid = data.uuid;
+
 	const onSubmit = (evt) => {
 		const newMessage = evt.target[0].value;
 		messages.push({ content: newMessage, author: null, id: messages.length.toString() });
@@ -41,11 +42,15 @@
 <div class="flex h-full w-full items-center justify-center">
 	<div class="grid h-4/5 w-2/6 min-w-[30rem] grid-rows-[1fr_4rem] border bg-neutral-900 p-2">
 		<div class="flex h-full min-h-[0] flex-col-reverse overflow-x-hidden overflow-y-scroll">
-			{#each [...messages].reverse() as message, idx (message.id)}
+			{#each [...messages].reverse() as message (message.id)}
 				<div
 					class="flex p-4 text-wrap break-all {message.author == null ? 'flex-row-reverse' : ''}"
 				>
-					<img class="clip-circle h-[2.5rem] w-[2.5rem]" src={message.author == null ? anon : pfp} alt="Profile"/>
+					<img
+						class="clip-circle h-[2.5rem] w-[2.5rem]"
+						src={message.author == null ? anon : pfp}
+						alt="Profile"
+					/>
 					<p class="p-2">{message.content}</p>
 				</div>
 				<hr class="w-[99%] self-center bg-white opacity-15" />
@@ -61,10 +66,18 @@
 			>
 				<Input
 					name="msg"
+					required
+					id="text-input"
 					class="bg-primary text-primary-foreground"
 					autocomplete="off"
 					type="text"
 					placeholder="Type Here"
+					onblur={() => {
+						setTimeout(() => {
+							const el = document.getElementById('text-input');
+							el?.focus();
+						}, 20);
+					}}
 				/>
 				<Button type="submit">Send</Button>
 			</form>
