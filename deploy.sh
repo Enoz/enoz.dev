@@ -5,13 +5,8 @@ if [ -z "${DISCORD_APP_TOKEN}" ]; then
     exit 1
 fi
 
-if [ -z "${DISCORD_APP_PUBLICKEY}" ]; then
-    echo "Missing DISCORD_APP_PUBLICKEY env"
-    exit 1
-fi
-
-if [ -z "${DISCORD_APP_ID}" ]; then
-    echo "Missing DISCORD_APP_ID env"
+if [ -z "${DISCORD_GUILD_ID}" ]; then
+    echo "Missing DISCORD_GUILD_ID env"
     exit 1
 fi
 
