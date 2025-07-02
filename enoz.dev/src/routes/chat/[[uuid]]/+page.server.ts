@@ -25,7 +25,7 @@ export async function load({ params, fetch }) {
 	// Chat exists, get history
 	const history = await chatHistory.json();
 	return {
-		messages: history,
+		messages: history.reverse(),
 		uuid: params.uuid
 	};
 }

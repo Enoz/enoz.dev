@@ -11,7 +11,7 @@
 
 	const onSubmit = (evt) => {
 		const newMessage = evt.target[0].value;
-		messages.push({ content: newMessage, author: null, id: messages.length.toString() });
+		messages.unshift({ content: newMessage, author: null, id: messages.length.toString() });
 	};
 
 	$effect(() => {
@@ -25,7 +25,7 @@
 				const msgJs: Array<any> = await msgRes.json();
 				if (msgJs.length > 0) {
 					msgJs.forEach((msg) => {
-						messages.push(msg);
+						messages.unshift(msg);
 					});
 				}
 			} catch (err) {
@@ -42,7 +42,7 @@
 <div class="flex h-full w-full items-center justify-center">
 	<div class="grid h-4/5 w-2/6 min-w-[30rem] grid-rows-[1fr_4rem] border bg-neutral-900 p-2">
 		<div class="flex h-full min-h-[0] flex-col-reverse overflow-x-hidden overflow-y-scroll">
-			{#each [...messages].reverse() as message (message.id)}
+			{#each messages as message (message.id)}
 				<div
 					class="flex p-4 text-wrap break-all {message.author == null ? 'flex-row-reverse' : ''}"
 				>
