@@ -4,7 +4,7 @@
 	let { children } = $props();
 </script>
 
-<main>
+<main class="h-full w-full text-stone-50">
 	{@render children()}
 </main>
 
@@ -40,12 +40,5 @@
 
 		background-repeat: repeat;
 		/* Background End */
-	}
-
-	main {
-		font-size: 110%;
-		color: rgba(255, 255, 255, 0.95);
-		height: 100%;
-		width: 100%;
 	}
 </style>
