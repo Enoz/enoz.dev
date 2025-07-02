@@ -3,7 +3,7 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 </script>
 
-<div class="grid h-screen items-center justify-center">
+<div class="grid h-full items-center justify-center">
 	<div class="grid">
 		<img class="clip-circle w-3xs" src={pfp} alt="Github Profile" />
 		<h1 class="mt-6 text-center text-3xl">Arek <i class="text-amber-600">Enoz</i> Dudek</h1>
