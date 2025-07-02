@@ -18,7 +18,7 @@ const rlKey = (req, res) => {
 }
 
 const newRateLimit = rateLimit({
-  windowMs: 1000 * 5, // 3 sec
+  windowMs: 1000 * 5, // 5 sec
   limit: 1,
   keyGenerator: rlKey,
   standardHeaders: 'draft-8',
@@ -27,14 +27,14 @@ const newRateLimit = rateLimit({
 
 const sendRateLimit = rateLimit({
   windowMs: 1000 * 5, // 5 seconds
-  limit: 5,
+  limit: 10,
   keyGenerator: rlKey,
   standardHeaders: 'draft-8',
   legacyHeaders: false,
 })
 //
 const getRateLimit = rateLimit({
-  windowMs: 1000 * 5, // 5 Gets every 5 sec
+  windowMs: 1000 * 20, // 20 Gets every 5 sec
   limit: 5,
   keyGenerator: rlKey,
   standardHeaders: 'draft-8',
