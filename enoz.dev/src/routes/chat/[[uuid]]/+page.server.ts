@@ -2,12 +2,6 @@ import { error, redirect } from '@sveltejs/kit';
 import { GetMessages, NewChat } from '$lib/chat';
 
 export async function load({ params, request }) {
-	const headers: HeadersInit = {};
-	const forwardedFor = request.headers.get('x-forwarded-for');
-	if (forwardedFor !== undefined) {
-		headers['x-override-ip'] = forwardedFor;
-	}
-
 	// No UUID, generate a new one
 	if (params.uuid === undefined) {
 		const createChat = await NewChat();
@@ -19,7 +13,7 @@ export async function load({ params, request }) {
 	}
 
 	// Check the health of the chat provided
-	const chatHistory = await GetMessages(params.uuid, headers);
+	const chatHistory = await GetMessages(params.uuid);
 	if (chatHistory.status == 404) {
 		// Chat doesn't exist, create a new one
 		redirect(303, `/chat`);

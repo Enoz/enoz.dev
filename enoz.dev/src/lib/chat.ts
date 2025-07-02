@@ -1,22 +1,18 @@
 export const CHATTER_API = 'https://chatter.enoz.dev';
 
-export async function NewChat(headers?: HeadersInit) {
+export async function NewChat() {
 	return fetch(`${CHATTER_API}/new`, {
-		method: 'POST',
-		headers
+		method: 'POST'
 	});
 }
 
-export async function GetMessages(uuid: string, headers?: HeadersInit) {
-	return fetch(`${CHATTER_API}/messages/${uuid}`, {
-		headers
-	});
+export async function GetMessages(uuid: string) {
+	return fetch(`${CHATTER_API}/messages/${uuid}`);
 }
 
-export async function SendMessage(uuid: string, message: string, headers?: HeadersInit) {
+export async function SendMessage(uuid: string, message: string) {
 	return fetch(`${CHATTER_API}/messages/${uuid}`, {
 		method: 'POST',
-		body: JSON.stringify({ message }),
-		headers
+		body: JSON.stringify({ message })
 	});
 }
