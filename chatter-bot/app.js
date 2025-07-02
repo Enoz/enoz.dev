@@ -34,7 +34,7 @@ const sendRateLimit = rateLimit({
 })
 //
 const getRateLimit = rateLimit({
-  windowMs: 1000 * 20, // 20 Gets every 5 sec
+  windowMs: 1000 * 1, // 20 Gets every 5 sec
   limit: 5,
   keyGenerator: rlKey,
   standardHeaders: 'draft-8',
