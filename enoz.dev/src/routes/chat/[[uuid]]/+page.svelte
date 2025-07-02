@@ -2,15 +2,13 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { enhance } from '$app/forms';
-
 	import { CHATTER_API } from '$lib/chat.js';
-	const { data } = $props();
-	let messages = $state(data.messages);
+	let { data } = $props();
+	let messages = $state(data.messages.reverse());
 	const uuid = data.uuid;
-
-	const predictSend = (evt) => {
+	const onSubmit = (evt) => {
 		const newMessage = evt.target[0].value;
-		messages.push({ content: newMessage, author: null });
+		messages.push({ content: newMessage, author: null, id: messages.length.toString() });
 	};
 
 	$effect(() => {
@@ -20,6 +18,7 @@
 				if (msgRes.status != 200) {
 					return;
 				}
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const msgJs: Array<any> = await msgRes.json();
 				if (msgJs.length > 0) {
 					msgJs.forEach((msg) => {
@@ -39,9 +38,9 @@
 
 <div class="flex h-full w-full items-center justify-center">
 	<div class="grid h-4/5 w-4/5 grid-rows-[1fr_4rem] border bg-neutral-900 p-2">
-		<div class="flex h-full flex-col justify-end">
-			{#each messages as message, idx (idx)}
-				<div>
+		<div class="flex h-full min-h-[0] flex-col-reverse overflow-x-hidden overflow-y-scroll">
+			{#each [...messages].reverse() as message (message.id)}
+				<div class="border text-wrap break-all">
 					<p>{JSON.stringify(message)}</p>
 				</div>
 			{/each}
@@ -51,7 +50,7 @@
 				class="flex h-full w-full items-center space-x-2"
 				data-sveltekit-preload-data="tap"
 				method="POST"
-				onsubmit={predictSend}
+				onsubmit={onSubmit}
 				use:enhance
 			>
 				<Input
