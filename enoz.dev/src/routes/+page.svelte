@@ -1,5 +1,5 @@
 <script lang="ts">
-	import pfp from './assets/gh-small.png';
+	import pfp from '$lib/assets/gh-small.png';
 	import Button from '$lib/components/ui/button/button.svelte';
 </script>
 
