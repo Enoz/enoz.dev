@@ -43,6 +43,7 @@ class GatewayClient {
     oldLog.push({
       content: message.content,
       author: message.author.globalName,
+      id: message.id,
     })
     this.#messageLog[message.channel.name] = oldLog
   }
