@@ -8,8 +8,8 @@
 	let { data } = $props();
 	let messages = $state(data.messages);
 	const uuid = data.uuid;
-
-	const onSubmit = (evt) => {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const onSubmit = (evt: any) => {
 		const newMessage = evt.target[0].value;
 		messages.unshift({ content: newMessage, author: null, id: messages.length.toString() });
 	};
