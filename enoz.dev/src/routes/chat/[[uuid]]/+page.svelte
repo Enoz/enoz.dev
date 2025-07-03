@@ -47,7 +47,7 @@
 					class="flex text-wrap break-all p-4 {message.author == null ? 'flex-row-reverse' : ''}"
 				>
 					<img
-						class="clip-circle h-[2.5rem] w-[2.5rem]"
+						class="rounded-full h-[2.5rem] w-[2.5rem]"
 						src={message.author == null ? anon : pfp}
 						alt="Profile"
 					/>
@@ -98,9 +98,3 @@
 		>. IPs are logged.
 	</div>
 </div>
-
-<style>
-	.clip-circle {
-		clip-path: circle();
-	}
-</style>
