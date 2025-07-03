@@ -107,7 +107,7 @@ class GatewayClient {
           .setTitle(emb.title)
           .setDescription(emb.description)
       })
-      channel.send({ embeds: embObj })
+      await channel.send({ embeds: embObj })
     }
     this.#messageLog[uuid] = []
     return channel

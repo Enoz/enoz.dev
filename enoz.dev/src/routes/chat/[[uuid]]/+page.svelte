@@ -1,30 +1,30 @@
 <script lang="ts">
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import type { ChatMessage } from '$lib/chat';
 	import { enhance } from '$app/forms';
 	import { CHATTER_API } from '$lib/chat.js';
+	import { page } from '$app/state';
 	import pfp from '$lib/assets/gh-small.png';
 	import anon from './assets/anon.jpg';
 	let { data } = $props();
 	let messages = $state(data.messages);
-	const uuid = data.uuid;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const onSubmit = (evt: any) => {
-		const newMessage = evt.target[0].value;
-		messages.unshift({ content: newMessage, author: null, id: messages.length.toString() });
-	};
 
 	$effect(() => {
 		const messageCheck = setInterval(async () => {
+			if (page.params.uuid === undefined) {
+				return;
+			}
 			try {
-				const msgRes = await fetch(`${CHATTER_API}/messages/${uuid}?after=${messages.length}`);
+				const msgRes = await fetch(
+					`${CHATTER_API}/messages/${page.params.uuid}?after=${messages.length}`
+				);
 				if (msgRes.status != 200) {
 					return;
 				}
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				const msgJs: Array<any> = await msgRes.json();
+				const msgJs = await msgRes.json();
 				if (msgJs.length > 0) {
-					msgJs.forEach((msg) => {
+					msgJs.forEach((msg: Array<ChatMessage>) => {
 						messages.unshift(msg);
 					});
 				}
@@ -61,8 +61,23 @@
 				class="flex h-full w-full items-center space-x-2"
 				data-sveltekit-preload-data="tap"
 				method="POST"
-				onsubmit={onSubmit}
-				use:enhance
+				use:enhance={(evt) => {
+					// Reset chat bot (Needed for new chat redirects)
+					evt.formElement.reset();
+
+					// Clientside message prediction
+					messages.unshift({
+						content: evt.formData.get('msg'),
+						author: null,
+						id: messages.length.toString()
+					});
+
+					return async ({ update }) => {
+						await update();
+						// Re-Focus text field after submission
+						document.getElementById('text-input')?.focus();
+					};
+				}}
 			>
 				<Input
 					name="msg"
@@ -72,12 +87,6 @@
 					autocomplete="off"
 					type="text"
 					placeholder="Type Here"
-					onblur={() => {
-						setTimeout(() => {
-							const el = document.getElementById('text-input');
-							el?.focus();
-						}, 15);
-					}}
 				/>
 				<Button type="submit">Send</Button>
 			</form>
