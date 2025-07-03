@@ -39,12 +39,12 @@
 	});
 </script>
 
-<div class="flex h-full w-full items-center justify-center">
+<div class="flex h-full w-full flex-col items-center justify-center">
 	<div class="grid h-4/5 w-5/6 grid-rows-[1fr_3rem] border bg-neutral-900 p-2">
 		<div class="flex h-full min-h-[0] flex-col-reverse overflow-x-hidden overflow-y-scroll">
 			{#each messages as message (message.id)}
 				<div
-					class="flex p-4 text-wrap break-all {message.author == null ? 'flex-row-reverse' : ''}"
+					class="flex text-wrap break-all p-4 {message.author == null ? 'flex-row-reverse' : ''}"
 				>
 					<img
 						class="clip-circle h-[2.5rem] w-[2.5rem]"
@@ -91,6 +91,11 @@
 				<Button class="bg-secondary text-primary h-full" type="submit">Send</Button>
 			</form>
 		</div>
+	</div>
+	<div class="pt-4">
+		Chat sessions are Anonymous between you and <a href="https://github.com/Enoz"
+			><i class="text-amber-600">Enoz</i></a
+		>. IPs are logged.
 	</div>
 </div>
 
