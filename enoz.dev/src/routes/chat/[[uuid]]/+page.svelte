@@ -44,10 +44,10 @@
 		<div class="flex h-full min-h-[0] flex-col-reverse overflow-x-hidden overflow-y-scroll">
 			{#each messages as message (message.id)}
 				<div
-					class="flex text-wrap break-all p-4 {message.author == null ? 'flex-row-reverse' : ''}"
+					class="flex p-4 text-wrap break-all {message.author == null ? 'flex-row-reverse' : ''}"
 				>
 					<img
-						class="rounded-full h-[2.5rem] w-[2.5rem]"
+						class="h-[2.5rem] w-[2.5rem] rounded-full"
 						src={message.author == null ? anon : pfp}
 						alt="Profile"
 					/>
@@ -88,7 +88,7 @@
 					type="text"
 					placeholder="Type Here"
 				/>
-				<Button class="bg-secondary text-primary h-full" type="submit">Send</Button>
+				<Button variant="secondary" class="h-full" type="submit">Send</Button>
 			</form>
 		</div>
 	</div>
