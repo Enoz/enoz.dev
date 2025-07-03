@@ -9,7 +9,7 @@
 		{
 			text: 'Github',
 			icon: githubLogo,
-			bgcolor: 'bg-neutral-800/90',
+			bgcolor: 'bg-neutral-800',
 			url: 'https://github.com/Enoz'
 		},
 		{
