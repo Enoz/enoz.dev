@@ -40,7 +40,7 @@
 </script>
 
 <div class="flex h-full w-full items-center justify-center">
-	<div class="grid h-4/5 w-5/6 grid-rows-[1fr_4rem] border bg-neutral-900 p-2">
+	<div class="grid h-4/5 w-5/6 grid-rows-[1fr_3rem] border bg-neutral-900 p-2">
 		<div class="flex h-full min-h-[0] flex-col-reverse overflow-x-hidden overflow-y-scroll">
 			{#each messages as message (message.id)}
 				<div
@@ -83,12 +83,12 @@
 					name="msg"
 					required
 					id="text-input"
-					class="bg-primary text-primary-foreground"
+					class="bg-primary text-primary-foreground h-full"
 					autocomplete="off"
 					type="text"
 					placeholder="Type Here"
 				/>
-				<Button type="submit">Send</Button>
+				<Button class="bg-secondary text-primary h-full" type="submit">Send</Button>
 			</form>
 		</div>
 	</div>
