@@ -22,13 +22,11 @@ class GatewayClient {
       console.log(`Ready! Logged in as ${readyClient.user.tag}`)
       this.#syncMessages()
     })
-    this.client.on('messageCreate', (msg) => {
-      this.#logMessage(msg)
-    })
+    this.client.on('messageCreate', this.#logMessage)
     this.client.login(process.env.DISCORD_APP_TOKEN)
   }
 
-  #messageLog = {}
+  #messageCache = {}
   #logMessage = (message) => {
     if (message.mentions.everyone) {
       return
@@ -36,7 +34,7 @@ class GatewayClient {
     if (message.content === '') {
       return
     }
-    let oldLog = this.#messageLog[message.channel.name]
+    let oldLog = this.#messageCache[message.channel.name]
     if (!oldLog) {
       oldLog = []
     }
@@ -45,11 +43,11 @@ class GatewayClient {
       author: message.author.globalName,
       id: message.id,
     })
-    this.#messageLog[message.channel.name] = oldLog
+    this.#messageCache[message.channel.name] = oldLog
   }
 
   #syncMessages = async () => {
-    this.#messageLog = {}
+    this.#messageCache = {}
 
     const guild = await this.client.guilds.fetch(MY_GUILD)
     if (!guild) {
@@ -65,14 +63,14 @@ class GatewayClient {
 
     const chatChannels = channels.filter((ch) => ch.parentId == activeChat.id)
     for (const ch of chatChannels) {
-      this.#messageLog[ch[1].name] = []
+      this.#messageCache[ch[1].name] = []
       const messages = await ch[1].messages.fetch()
       messages.reverse().forEach(this.#logMessage)
     }
   }
 
   getMessages = (uuid) => {
-    return this.#messageLog[uuid]
+    return this.#messageCache[uuid]
   }
 
   newChat = async (embeds) => {
@@ -109,7 +107,7 @@ class GatewayClient {
       })
       await channel.send({ embeds: embObj })
     }
-    this.#messageLog[uuid] = []
+    this.#messageCache[uuid] = []
     return channel
   }
 

@@ -9,7 +9,7 @@ app.set('trust proxy', true)
 app.use(cors())
 app.use(express.json())
 
-const rlKey = (req, res) => {
+const rlKey = (req) => {
   const override = req.headers?.['x-override-ip']
   if (override !== undefined && override.length > 0) {
     return override
