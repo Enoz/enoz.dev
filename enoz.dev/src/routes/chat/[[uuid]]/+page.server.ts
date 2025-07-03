@@ -33,7 +33,7 @@ export const actions = {
 		let isFirstMessage = false;
 		let uuid = event.params.uuid;
 		if (event.params.uuid === undefined) {
-			const createChat = await fetch(`${CHATTER_API}/new`, {
+			const createChat = await event.fetch(`${CHATTER_API}/new`, {
 				method: 'POST'
 			});
 			if (createChat.status == 429) {
@@ -44,7 +44,7 @@ export const actions = {
 			isFirstMessage = true;
 		}
 		const message = fd.get('msg')?.toString() || '';
-		const msgRes = fetch(`${CHATTER_API}/messages/${uuid}`, {
+		const msgRes = event.fetch(`${CHATTER_API}/messages/${uuid}`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
