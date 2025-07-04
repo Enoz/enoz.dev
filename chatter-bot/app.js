@@ -2,13 +2,14 @@ import { rateLimit } from 'express-rate-limit'
 import cors from 'cors'
 import express from 'express'
 import GatewayClient from './src/gateway.js'
+import ChatterRest from './src/rest.js'
 
 let app = express()
 app.set('trust proxy', true)
 app.use(cors())
 app.use(express.json())
 
-const client = new GatewayClient()
+const chatter = new ChatterRest(new GatewayClient())
 
 const rlKey = (req) => {
   const override = req.headers?.['x-override-ip']
@@ -42,9 +43,9 @@ const getRateLimit = rateLimit({
   legacyHeaders: false,
 })
 
-app.post('/new', newRateLimit, client.handleNew)
-app.post('/messages/:uuid', sendRateLimit, client.handleSend)
-app.get('/messages/:uuid', getRateLimit, client.handleGet)
+app.post('/new', newRateLimit, chatter.handleNew)
+app.post('/messages/:uuid', sendRateLimit, chatter.handleSend)
+app.get('/messages/:uuid', getRateLimit, chatter.handleGet)
 
 const PORT = process.env.PORT || 3000
 app.listen(process.env.PORT || 3000, () => {
