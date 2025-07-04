@@ -4,7 +4,7 @@
 	import { fly } from 'svelte/transition';
 	import type { ChatMessage } from '$lib/chat';
 	import { enhance } from '$app/forms';
-	import { CHATTER_API } from '$lib/chat.js';
+	import { CHATTER_API, ChatSocket } from '$lib/chat.js';
 	import { page } from '$app/state';
 	import pfp from '$lib/assets/gh-small.png';
 	import anon from './assets/anon.jpg';
@@ -13,30 +13,12 @@
 	let messages = $state(data.messages);
 
 	$effect(() => {
-		const messageCheck = setInterval(async () => {
-			if (page.params.uuid === undefined) {
-				return;
-			}
-			try {
-				const msgRes = await fetch(
-					`${CHATTER_API}/messages/${page.params.uuid}?after=${messages.length}`
-				);
-				if (msgRes.status != 200) {
-					return;
-				}
-				const msgJs = await msgRes.json();
-				if (msgJs.length > 0) {
-					msgJs.forEach((msg: Array<ChatMessage>) => {
-						messages.unshift(msg);
-					});
-				}
-			} catch (err) {
-				console.error('Message Failure', err);
-			}
-		}, 2000);
+		const ws = new ChatSocket(page.params.uuid, (msg) => {
+			messages.unshift(msg);
+		});
 
 		return () => {
-			clearInterval(messageCheck);
+			ws.close();
 		};
 	});
 </script>
