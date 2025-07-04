@@ -42,6 +42,11 @@
 <div class="flex h-full w-full flex-col items-center justify-center">
 	<div class="grid h-4/5 w-5/6 grid-rows-[1fr_3rem] border bg-neutral-900 p-2">
 		<div class="flex h-full min-h-[0] flex-col-reverse overflow-x-hidden overflow-y-scroll">
+			{#if messages.length == 0}
+				<div class="pb-[1rem] text-center text-gray-400 select-none">
+					Begin chatting by typing a message
+				</div>
+			{/if}
 			{#each messages as message (message.id)}
 				<div
 					class="flex p-4 text-wrap break-all {message.author == null ? 'flex-row-reverse' : ''}"
