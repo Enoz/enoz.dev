@@ -4,14 +4,16 @@ export class MessageCache {
 
   onMessage = (message) => {
     let oldLog = this.#messages[message.channel.name] || []
+    const msgObj = {
+      content: message.content,
+      author: message.author.globalName,
+      id: message.id,
+    }
     if (message.content !== '') {
-      oldLog.push({
-        content: message.content,
-        author: message.author.globalName,
-        id: message.id,
-      })
+      oldLog.push(msgObj)
     }
     this.#messages[message.channel.name] = oldLog
+    return msgObj
   }
 
   getMessages = (channelName) => {

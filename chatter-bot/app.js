@@ -1,14 +1,17 @@
 import { rateLimit } from 'express-rate-limit'
 import cors from 'cors'
 import express from 'express'
-import { handleNew, handleSend, handleGet } from './src/rest.js'
-// import expressWs from 'express-ws'
+import GatewayClient from './src/gateway.js'
 
-const app = express()
+import expressWs from 'express-ws'
+
+let app = express()
 app.set('trust proxy', true)
 app.use(cors())
 app.use(express.json())
-// expressWs(app)
+app = expressWs(app).app
+
+const client = new GatewayClient()
 
 const rlKey = (req) => {
   const override = req.headers?.['x-override-ip']
@@ -42,9 +45,11 @@ const getRateLimit = rateLimit({
   legacyHeaders: false,
 })
 
-app.post('/new', newRateLimit, handleNew)
-app.post('/messages/:uuid', sendRateLimit, handleSend)
-app.get('/messages/:uuid', getRateLimit, handleGet)
+app.post('/new', newRateLimit, client.handleNew)
+app.post('/messages/:uuid', sendRateLimit, client.handleSend)
+app.get('/messages/:uuid', getRateLimit, client.handleGet)
+
+app.ws('/ws/:uuid', client.handleWS)
 
 const PORT = process.env.PORT || 3000
 app.listen(process.env.PORT || 3000, () => {

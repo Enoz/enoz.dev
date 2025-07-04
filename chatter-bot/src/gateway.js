@@ -25,7 +25,7 @@ class GatewayClient {
       console.log(`Ready! Logged in as ${readyClient.user.tag}`)
       this.#syncMessages()
     })
-    this.client.on('messageCreate', this.#messages.onMessage)
+    this.client.on('messageCreate', this.onMessage)
     this.client.login(process.env.DISCORD_APP_TOKEN)
   }
 
@@ -103,8 +103,98 @@ class GatewayClient {
     channel.send(message)
   }
 
+  /*
+   * REST ROUTES
+   */
+  handleNew = async (req, res) => {
+    try {
+      const callerIP = req.ip
+      const embeds = [{ title: 'Client IP', description: callerIP }]
+      const overrideIp = req.headers?.['x-override-ip']
+      if (overrideIp !== undefined && overrideIp.length > 0) {
+        embeds.push({ title: 'Override IP', description: overrideIp })
+      }
 
+      const channel = await this.newChat(embeds)
+      return res.status(200).json({ id: channel.name })
+    } catch (err) {
+      console.error(err)
+      return res.status(500).send()
+    }
+  }
 
+  handleSend = async (req, res) => {
+    try {
+      if (!req.body?.message) {
+        return res.status(400).json({ error: 'message required' })
+      }
+      const uuid = req.params.uuid
+      await this.sendMessage(uuid, req.body.message)
+      return res.status(200).send()
+    } catch (error) {
+      console.error(error)
+      return res.status(500).send()
+    }
+  }
+
+  handleGet = async (req, res) => {
+    try {
+      const uuid = req.params.uuid
+      let messages = this.getMessages(uuid)
+      if (messages === undefined) {
+        return res.status(404).send()
+      }
+      const after = req.query.after
+      if (after !== undefined && after > 0) {
+        messages = messages.slice(after, messages.length)
+      }
+      return res.status(200).json(messages)
+    } catch (error) {
+      console.error(error)
+      return res.status(500).send()
+    }
+  }
+
+  onMessage = (msg) => {
+    const msgObj = this.#messages.onMessage(msg)
+    const uuid = msg.channel.name
+    const wsDict = this.#wsTable[uuid]
+    if (msgObj.author !== null) {
+      if (wsDict) {
+        for (const id in wsDict) {
+          const ws = wsDict[id]
+          ws.send(JSON.stringify([msgObj]))
+        }
+      }
+    }
+  }
+
+  /*
+   * Websocket Route
+   */
+  #wsTable = {}
+  #wsId = 0
+  handleWS = async (ws, req) => {
+    const id = this.#wsId++
+    const uuid = req.params.uuid
+    if (!uuid || uuid.length < 1) {
+      ws.terminate()
+      return
+    }
+    if (!this.#wsTable[uuid]) {
+      this.#wsTable[uuid] = {}
+    }
+    this.#wsTable[uuid][id] = ws
+
+    const onClose = () => {
+      delete this.#wsTable[uuid][id]
+    }
+
+    ws.on('close', onClose)
+    ws.on('exit', onClose)
+    ws.on('disconnect', onClose)
+    ws.send(JSON.stringify(this.#messages.getMessages(uuid)))
+  }
 }
 
 export default GatewayClient
