@@ -1,12 +1,14 @@
 <script lang="ts">
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import { fly } from 'svelte/transition';
 	import type { ChatMessage } from '$lib/chat';
 	import { enhance } from '$app/forms';
 	import { CHATTER_API } from '$lib/chat.js';
 	import { page } from '$app/state';
 	import pfp from '$lib/assets/gh-small.png';
 	import anon from './assets/anon.jpg';
+	import { cubicOut } from 'svelte/easing';
 	let { data } = $props();
 	let messages = $state(data.messages);
 
@@ -48,17 +50,19 @@
 				</div>
 			{/if}
 			{#each messages as message (message.id)}
-				<div
-					class="flex p-4 text-wrap break-all {message.author == null ? 'flex-row-reverse' : ''}"
-				>
-					<img
-						class="h-[2.5rem] w-[2.5rem] rounded-full"
-						src={message.author == null ? anon : pfp}
-						alt="Profile"
-					/>
-					<p class="p-2">{message.content}</p>
+				<div transition:fly|global={{ y: 50, duration: 300, easing: cubicOut }}>
+					<div
+						class="flex p-4 text-wrap break-all {message.author == null ? 'flex-row-reverse' : ''}"
+					>
+						<img
+							class="h-[2.5rem] w-[2.5rem] rounded-full"
+							src={message.author == null ? anon : pfp}
+							alt="Profile"
+						/>
+						<p class="p-2">{message.content}</p>
+					</div>
+					<hr class="w-[99%] self-center bg-white opacity-15" />
 				</div>
-				<hr class="w-[99%] self-center bg-white opacity-15" />
 			{/each}
 		</div>
 		<div>
