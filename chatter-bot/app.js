@@ -3,13 +3,10 @@ import cors from 'cors'
 import express from 'express'
 import GatewayClient from './src/gateway.js'
 
-import expressWs from 'express-ws'
-
 let app = express()
 app.set('trust proxy', true)
 app.use(cors())
 app.use(express.json())
-app = expressWs(app).app
 
 const client = new GatewayClient()
 
@@ -48,8 +45,6 @@ const getRateLimit = rateLimit({
 app.post('/new', newRateLimit, client.handleNew)
 app.post('/messages/:uuid', sendRateLimit, client.handleSend)
 app.get('/messages/:uuid', getRateLimit, client.handleGet)
-
-app.ws('/ws/:uuid', client.handleWS)
 
 const PORT = process.env.PORT || 3000
 app.listen(process.env.PORT || 3000, () => {

@@ -25,7 +25,7 @@ class GatewayClient {
       console.log(`Ready! Logged in as ${readyClient.user.tag}`)
       this.#syncMessages()
     })
-    this.client.on('messageCreate', this.onMessage)
+    this.client.on('messageCreate', this.#messages.onMessage)
     this.client.login(process.env.DISCORD_APP_TOKEN)
   }
 
@@ -153,47 +153,6 @@ class GatewayClient {
       console.error(error)
       return res.status(500).send()
     }
-  }
-
-  onMessage = (msg) => {
-    const msgObj = this.#messages.onMessage(msg)
-    const uuid = msg.channel.name
-    const wsDict = this.#wsTable[uuid]
-    if (msgObj.author !== null) {
-      if (wsDict) {
-        for (const id in wsDict) {
-          const ws = wsDict[id]
-          ws.send(JSON.stringify([msgObj]))
-        }
-      }
-    }
-  }
-
-  /*
-   * Websocket Route
-   */
-  #wsTable = {}
-  #wsId = 0
-  handleWS = async (ws, req) => {
-    const id = this.#wsId++
-    const uuid = req.params.uuid
-    if (!uuid || uuid.length < 1) {
-      ws.terminate()
-      return
-    }
-    if (!this.#wsTable[uuid]) {
-      this.#wsTable[uuid] = {}
-    }
-    this.#wsTable[uuid][id] = ws
-
-    const onClose = () => {
-      delete this.#wsTable[uuid][id]
-    }
-
-    ws.on('close', onClose)
-    ws.on('exit', onClose)
-    ws.on('disconnect', onClose)
-    ws.send(JSON.stringify(this.#messages.getMessages(uuid)))
   }
 }
 
