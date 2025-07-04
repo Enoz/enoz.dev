@@ -1,13 +1,14 @@
 import { rateLimit } from 'express-rate-limit'
 import cors from 'cors'
 import express from 'express'
-import { handleNew, handleSend, handleGet } from './chat.js'
+import { handleNew, handleSend, handleGet } from './src/rest.js'
+// import expressWs from 'express-ws'
 
 const app = express()
 app.set('trust proxy', true)
-
 app.use(cors())
 app.use(express.json())
+// expressWs(app)
 
 const rlKey = (req) => {
   const override = req.headers?.['x-override-ip']
