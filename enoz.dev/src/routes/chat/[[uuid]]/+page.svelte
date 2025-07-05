@@ -11,7 +11,7 @@
 	import { cubicOut } from 'svelte/easing';
 	let { data } = $props();
 	let messages = $state(data.messages);
-    let sending = $state(false)
+	let sending = $state(false);
 
 	$effect(() => {
 		if (page.params.uuid === undefined) {
@@ -20,9 +20,9 @@
 		new GatewaySocket(page.params.uuid, (msgs) => {
 			msgs.forEach((msg) => {
 				if (!messages.find((m: ChatMessage) => m.id === msg.id)) {
-                    if (msg.author === null) {
-                        sending = false
-                    }
+					if (msg.author === null) {
+						sending = false;
+					}
 					messages.unshift(msg);
 				}
 			});
@@ -62,7 +62,7 @@
 				use:enhance={(evt) => {
 					// Reset chat bot (Needed for new chat redirects)
 					evt.formElement.reset();
-                    sending = true
+					sending = true;
 
 					return async ({ update }) => {
 						await update();
