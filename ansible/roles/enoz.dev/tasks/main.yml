@@ -1,9 +1,4 @@
-- name: Remove old container
-  community.docker.docker_container:
-    name: enoz.dev
-    state: absent
-
-- name: Clean old image
+- name: Clean old image directory
   file:
     path: /root/enoz.dev/
     state: absent
@@ -17,6 +12,11 @@
   copy:
     src: enoz.dev.tar.gz
     dest: /root/enoz.dev/enoz.dev.tar.gz
+
+- name: Remove old container
+  community.docker.docker_container:
+    name: enoz.dev
+    state: absent
 
 - name: Load enoz.dev image
   community.docker.docker_image_load:

@@ -1,9 +1,4 @@
-- name: Remove old container
-  community.docker.docker_container:
-    name: chatter-bot
-    state: absent
-
-- name: Clean old image
+- name: Clean old image directory
   file:
     path: /root/chatter-bot/
     state: absent
@@ -22,6 +17,11 @@
   copy:
     src: secrets.env
     dest: /root/chatter-bot/secrets.env
+
+- name: Remove old container
+  community.docker.docker_container:
+    name: chatter-bot
+    state: absent
 
 - name: Load chatter-bot image
   community.docker.docker_image_load:
