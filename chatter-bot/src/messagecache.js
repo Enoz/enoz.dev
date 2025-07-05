@@ -13,7 +13,7 @@ export class MessageCache {
       oldLog.push(msgObj)
     }
     this.#messages[message.channel.name] = oldLog
-    return msgObj
+    return { message: msgObj, id: message.channel.name }
   }
 
   getMessages = (channelName) => {

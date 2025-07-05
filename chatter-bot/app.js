@@ -3,13 +3,19 @@ import cors from 'cors'
 import express from 'express'
 import GatewayClient from './src/gateway.js'
 import ChatterRest from './src/rest.js'
+import expressWsImp from 'express-ws'
+import ChatterWs from './src/ws.js'
 
 let app = express()
 app.set('trust proxy', true)
 app.use(cors())
 app.use(express.json())
+const expressWs = expressWsImp(app)
+app = expressWs.app
 
-const chatter = new ChatterRest(new GatewayClient())
+const client = new GatewayClient()
+const chatter = new ChatterRest(client)
+const ws = new ChatterWs(client)
 
 const rlKey = (req) => {
   const override = req.headers?.['x-override-ip']
@@ -46,6 +52,9 @@ const getRateLimit = rateLimit({
 app.post('/new', newRateLimit, chatter.handleNew)
 app.post('/messages/:uuid', sendRateLimit, chatter.handleSend)
 app.get('/messages/:uuid', getRateLimit, chatter.handleGet)
+
+app.ws('/ws/:uuid', ws.wsApi)
+ws.setWss(expressWs.getWss('/ws/:uuid'))
 
 const PORT = process.env.PORT || 3000
 app.listen(process.env.PORT || 3000, () => {

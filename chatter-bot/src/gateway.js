@@ -12,7 +12,11 @@ export const MY_GUILD = process.env.DISCORD_GUILD_ID
 const ACTIVE_CHANNEL = 'active-chats'
 class GatewayClient {
   #messages
+  #hooks
   constructor() {
+    this.#hooks = {
+      message: [],
+    }
     this.#messages = new MessageCache()
     this.client = new Client({
       intents: [
@@ -25,8 +29,17 @@ class GatewayClient {
       console.log(`Ready! Logged in as ${readyClient.user.tag}`)
       this.#syncMessages()
     })
-    this.client.on('messageCreate', this.#messages.onMessage)
+    this.client.on('messageCreate', (msg) => {
+      const { message, id } = this.#messages.onMessage(msg)
+      this.#hooks.message.forEach((fn) => {
+        fn(id, message)
+      })
+    })
     this.client.login(process.env.DISCORD_APP_TOKEN)
+  }
+
+  on = (hook, fn) => {
+    this.#hooks[hook].push(fn)
   }
 
   #syncMessages = async () => {
