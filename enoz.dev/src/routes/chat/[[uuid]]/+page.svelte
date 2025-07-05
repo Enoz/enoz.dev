@@ -4,40 +4,29 @@
 	import { fly } from 'svelte/transition';
 	import type { ChatMessage } from '$lib/chat';
 	import { enhance } from '$app/forms';
-	import { CHATTER_API } from '$lib/chat.js';
+	import { GatewaySocket } from '$lib/chat.js';
 	import { page } from '$app/state';
 	import pfp from '$lib/assets/gh-small.png';
 	import anon from './assets/anon.jpg';
 	import { cubicOut } from 'svelte/easing';
 	let { data } = $props();
 	let messages = $state(data.messages);
+    let sending = $state(false)
 
 	$effect(() => {
-		const messageCheck = setInterval(async () => {
-			if (page.params.uuid === undefined) {
-				return;
-			}
-			try {
-				const msgRes = await fetch(
-					`${CHATTER_API}/messages/${page.params.uuid}?after=${messages.length}`
-				);
-				if (msgRes.status != 200) {
-					return;
+		if (page.params.uuid === undefined) {
+			return;
+		}
+		new GatewaySocket(page.params.uuid, (msgs) => {
+			msgs.forEach((msg) => {
+				if (!messages.find((m: ChatMessage) => m.id === msg.id)) {
+                    if (msg.author === null) {
+                        sending = false
+                    }
+					messages.unshift(msg);
 				}
-				const msgJs = await msgRes.json();
-				if (msgJs.length > 0) {
-					msgJs.forEach((msg: Array<ChatMessage>) => {
-						messages.unshift(msg);
-					});
-				}
-			} catch (err) {
-				console.error('Message Failure', err);
-			}
-		}, 2000);
-
-		return () => {
-			clearInterval(messageCheck);
-		};
+			});
+		});
 	});
 </script>
 
@@ -73,13 +62,7 @@
 				use:enhance={(evt) => {
 					// Reset chat bot (Needed for new chat redirects)
 					evt.formElement.reset();
-
-					// Clientside message prediction
-					messages.unshift({
-						content: evt.formData.get('msg'),
-						author: null,
-						id: messages.length.toString()
-					});
+                    sending = true
 
 					return async ({ update }) => {
 						await update();
@@ -97,7 +80,7 @@
 					type="text"
 					placeholder="Type Here"
 				/>
-				<Button variant="secondary" class="h-full" type="submit">Send</Button>
+				<Button disabled={sending} variant="secondary" class="h-full" type="submit">Send</Button>
 			</form>
 		</div>
 	</div>

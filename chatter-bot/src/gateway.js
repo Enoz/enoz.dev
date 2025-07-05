@@ -31,9 +31,11 @@ class GatewayClient {
     })
     this.client.on('messageCreate', (msg) => {
       const { message, id } = this.#messages.onMessage(msg)
-      this.#hooks.message.forEach((fn) => {
-        fn(id, message)
-      })
+      if (message.content !== '') {
+        this.#hooks.message.forEach((fn) => {
+          fn(id, message)
+        })
+      }
     })
     this.client.login(process.env.DISCORD_APP_TOKEN)
   }

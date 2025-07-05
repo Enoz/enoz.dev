@@ -10,7 +10,7 @@ export default class ChatterWs {
     if (this.#wss) {
       this.#wss.clients.forEach((ws) => {
         if (ws.uuid == id) {
-          ws.send([JSON.stringify(msg)])
+          ws.send(JSON.stringify([msg]))
         }
       })
     }
