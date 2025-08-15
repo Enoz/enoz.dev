@@ -13,7 +13,7 @@
     name: iptables-persistent
     update_cache: true
 
-- name: Enalbe netfilter-persistent
+- name: Enable netfilter-persistent
   systemd:
     name: netfilter-persistent
     enabled: true
