@@ -84,9 +84,5 @@
 			</form>
 		</div>
 	</div>
-	<div class="pt-4">
-		Chat sessions are Anonymous between you and <a href="https://github.com/Enoz"
-			><i class="text-amber-600">Enoz</i></a
-		>. IPs are logged.
-	</div>
+	<div class="pt-4">Chat sessions are Anonymous</div>
 </div>
