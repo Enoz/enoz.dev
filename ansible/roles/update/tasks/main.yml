@@ -1,18 +1,10 @@
-- name: Perform a dist-upgrade.
-  ansible.builtin.apt:
-    upgrade: dist
+- name: Run apt-get update
+  apt:
     update_cache: yes
+    cache_valid_time: 3600
 
-- name: Check if a reboot is required.
-  ansible.builtin.stat:
-    path: /var/run/reboot-required
-    get_checksum: no
-  register: reboot_required_file
-
-- name: Reboot the server (if required).
-  ansible.builtin.reboot:
-  when: reboot_required_file.stat.exists == true
-
-- name: Remove dependencies that are no longer required.
-  ansible.builtin.apt:
+- name: Upgrade all installed packages
+  apt:
+    upgrade: dist
+    force_apt_get: yes
     autoremove: yes
