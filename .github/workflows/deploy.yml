@@ -12,10 +12,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Generate known_hosts
+        id: known_hosts
+        run: |
+            echo "known_hosts=$(ssh-keyscan ${{ vars.SERVER_IP }})" >> $GITHUB_OUTPUT
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ steps.known_hosts.outputs.known_hosts }}
           if_key_exists: ignore
 
 
