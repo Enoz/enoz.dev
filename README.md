@@ -20,9 +20,3 @@ The website is served from a single [VPS](https://www.vultr.com/). Both the fron
 https://enoz.dev -> VPS -> | Caddy  |-> Frontend (SSR served with Node)
                                     |-> Chatter-Bot (Node)
 ```
-
-### Execution
-
-Run [deploy.sh](./deploy.sh). Deployment is handled using [Ansible](https://docs.ansible.com/).
-
-`www.enoz.dev`, `enoz.dev`, and `chatter.enoz.dev` DNS records may need to be modified to the [Server's IP](ansible/hosts)
