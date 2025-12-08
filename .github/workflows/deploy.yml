@@ -35,10 +35,14 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v5
         with:
           playbook: ./ansible/website.yml
+          configuration: |
+            [defaults]
+            interpreter_python=auto_silent
           inventory: |
             ${{ vars.SERVER_IP }} ansible_user=root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: ${{ vars.SSH_KNOWN_HOSTS }} # Generate with ssh-keyscan <IP>
+
 
 
 
