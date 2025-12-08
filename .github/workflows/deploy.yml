@@ -12,12 +12,24 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: latest
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
           if_key_exists: ignore
+      - name: Build enoz.dev
+        working-directory: enoz.dev
+        run: |
+          npm run docker
+      - name: Build chatter bot
+        working-directory: chatter-bot
+        run: |
+          npm run docker
 
 
 
