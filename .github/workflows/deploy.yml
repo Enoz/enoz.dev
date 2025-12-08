@@ -16,12 +16,12 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: latest
-      - name: Install SSH Key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
-          if_key_exists: ignore
+      # - name: Install SSH Key
+      #   uses: shimataro/ssh-key-action@v2
+      #   with:
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+      #     if_key_exists: ignore
       - name: Build enoz.dev
         working-directory: enoz.dev
         run: |
@@ -30,6 +30,14 @@ jobs:
         working-directory: chatter-bot
         run: |
           npm run docker
+      - name: Run ansible playbook
+        uses: dawidd6/action-ansible-playbook@v5
+        with:
+          playbook: ./ansible/website.yml
+          inventory: |
+            ${{ vars.SERVER_IP }} ansible_user=root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
 
 
 
