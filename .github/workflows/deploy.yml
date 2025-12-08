@@ -35,7 +35,7 @@ jobs:
           inventory: |
             ${{ vars.SERVER_IP }} ansible_user=root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+          known_hosts: ${{ vars.SSH_KNOWN_HOSTS }} # Generate with ssh-keyscan <IP>
 
 
 
