@@ -6,7 +6,6 @@ on:
       - master
 concurrency:
   group: enoz-group
-  cancel-in-progress: true
 
 jobs:
   deploy:
