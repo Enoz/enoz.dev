@@ -10,6 +10,8 @@
 	import anon from './assets/anon.jpg';
 	import { cubicOut } from 'svelte/easing';
 	let { data } = $props();
+	// Ignore, we are capturing the remaining messages in a websocket
+	// svelte-ignore state_referenced_locally
 	let messages = $state(data.messages);
 	let sending = $state(false);
 
