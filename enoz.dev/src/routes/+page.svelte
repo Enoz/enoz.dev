@@ -2,7 +2,6 @@
 	import pfp from '$lib/assets/gh-small.png';
 	import githubLogo from './assets/github-mark-white.svg';
 	import discordLogo from './assets/discord-icon-svgrepo-com.svg';
-	import Button from '$lib/components/ui/button/button.svelte';
 	import Profile from './components/profile.svelte';
 
 	const profiles = [
@@ -25,9 +24,6 @@
 	<div class="grid">
 		<img class="w-3xs rounded-full" src={pfp} alt="Github Profile" />
 		<h1 class="mt-6 text-center text-3xl">Arek Dudek</h1>
-		<Button class="mt-3 text-2xl select-none" href="/chat"
-			><span class=" h-[1rem] w-[1rem] animate-pulse rounded-full bg-green-500"></span> Private Chat</Button
-		>
 	</div>
 
 	<div class="flex pt-[2rem]">

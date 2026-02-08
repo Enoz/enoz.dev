@@ -4,6 +4,3 @@ www.enoz.dev, arekdudek.com, www.arekdudek.com {
 enoz.dev {
     reverse_proxy localhost:8082
 }
-chatter.enoz.dev {
-    reverse_proxy localhost:8081
-}

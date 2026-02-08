@@ -23,14 +23,6 @@ jobs:
         working-directory: enoz.dev
         run: |
           npm run docker
-      - name: Build chatter bot
-        working-directory: chatter-bot
-        run: |
-          npm run docker
-      - name: Add chatter-bot secrets
-        run: |
-          echo "DISCORD_APP_TOKEN=${{ secrets.DISCORD_APP_TOKEN }}" >> ./ansible/roles/chatter-bot/files/secrets.env
-          echo "DISCORD_GUILD_ID=${{ secrets.DISCORD_GUILD_ID }}" >> ./ansible/roles/chatter-bot/files/secrets.env
       - name: Run ansible playbook
         uses: dawidd6/action-ansible-playbook@v5
         with:
