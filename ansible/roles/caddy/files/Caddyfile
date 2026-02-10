@@ -1,6 +1,0 @@
-www.enoz.dev, arekdudek.com, www.arekdudek.com {
-    redir https://enoz.dev
-}
-enoz.dev {
-    reverse_proxy localhost:8082
-}

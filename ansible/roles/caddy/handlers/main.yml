@@ -1,2 +1,0 @@
-- name: Reload Caddy
-  command: caddy reload -c /etc/caddy/Caddyfile
