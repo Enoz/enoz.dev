@@ -22,20 +22,18 @@ jobs:
         with:
           node-version: 24
           cache: 'npm'
-          cache-dependency-path: enoz.dev/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
-        working-directory: enoz.dev
 
       - name: Build
         run: npm run build
-        working-directory: enoz.dev
 
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'enoz.dev/build/'
+          path: 'build/'
 
   deploy:
     needs: build_site
